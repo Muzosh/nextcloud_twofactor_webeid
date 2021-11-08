@@ -1,0 +1,15 @@
+{
+    "name": "Smart Card Two Factor",
+    "description": "Smart card two-factor authentication",
+    "type": "project",
+    "license": "AGPL",
+    "authors": [
+        {
+            "name": "Petr Muzikant"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^5.4"
+    }
+}
