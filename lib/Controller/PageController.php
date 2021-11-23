@@ -25,7 +25,7 @@ class PageController extends Controller {
 	 * @NoCSRFRequired
 	 */
 	public function index() {
-		return new TemplateResponse('smartcardtwofactor', 'index');  // templates/index.php
+		return new TemplateResponse('twofactor_smartcard', 'index');  // templates/index.php
 	}
 
 }

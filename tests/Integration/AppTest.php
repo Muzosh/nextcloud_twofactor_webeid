@@ -17,13 +17,13 @@ class AppTest extends TestCase {
 
     public function setUp() {
         parent::setUp();
-        $app = new App('smartcardtwofactor');
+        $app = new App('twofactor_smartcard');
         $this->container = $app->getContainer();
     }
 
     public function testAppInstalled() {
         $appManager = $this->container->query('OCP\App\IAppManager');
-        $this->assertTrue($appManager->isInstalled('smartcardtwofactor'));
+        $this->assertTrue($appManager->isInstalled('twofactor_smartcard'));
     }
 
 }

@@ -1,6 +1,6 @@
 <?php
-script('smartcardtwofactor', 'script');
-style('smartcardtwofactor', 'style');
+script('twofactor_smartcard', 'script');
+style('twofactor_smartcard', 'style');
 ?>
 
 <div id="app">

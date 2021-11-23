@@ -9,8 +9,8 @@ require_once __DIR__.'/../../../lib/base.php';
 // Fix for "Autoload path not allowed: .../tests/lib/testcase.php"
 \OC::$loader->addValidRoot(OC::$SERVERROOT . '/tests');
 
-// Fix for "Autoload path not allowed: .../smartcardtwofactor/tests/testcase.php"
-\OC_App::loadApp('smartcardtwofactor');
+// Fix for "Autoload path not allowed: .../twofactor_smartcard/tests/testcase.php"
+\OC_App::loadApp('twofactor_smartcard');
 
 if(!class_exists('PHPUnit_Framework_TestCase')) {
     require_once('PHPUnit/Autoload.php');
