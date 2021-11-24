@@ -1,23 +1,23 @@
 <?xml version="1.0"?>
-<info xmlns:xsi= "http://www.w3.org/2001/XMLSchema-instance"
-      xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
-    <id>twofactor_smartcard</id>
-    <name>Smart Card Two Factor</name>
-    <summary>Smart card two-factor authentication</summary>
-    <description><![CDATA[test]]></description>
-    <version>0.0.1</version>
-    <licence>agpl</licence>
-    <author mail="petr.muzikant@vut.cz" >Petr Muzikant</author>
-    <namespace>SmartCardTwoFactor</namespace>
-    <category>integration</category>
-    <bugs>https://github.com/Muzosh/SmardCardTwoFactor/issues</bugs>
-    <dependencies>
-        <nextcloud min-version="22" max-version="22"/>
-    </dependencies>
-    <navigations>
-        <navigation>
-            <name>Smart Card Two Factor</name>
-            <route>twofactor_smartcard.page.index</route>
-        </navigation>
-    </navigations>
+<info xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
+	<id>twofactor_smartcard</id>
+	<name>Smart Card Two Factor</name>
+	<summary>Smart card two-factor authentication</summary>
+	<description>temp description</description>
+	<version>0.0.1</version>
+	<licence>agpl</licence>
+	<author mail="petr.muzikant@vut.cz">Petr Muzikant</author>
+	<namespace>SmartCardTwoFactor</namespace>
+	<category>security</category>
+	<website>https://github.com/Muzosh/twofactor_smardcard</website>
+	<bugs>https://github.com/Muzosh/twofactor_smartcard/issues</bugs>
+	<dependencies>
+		<nextcloud min-version="22" max-version="22" />
+	</dependencies>
+	<two-factor-providers>
+		<provider>OCA\SmartCardTwoFactor\Provider\SmartCardProvider</provider>
+	</two-factor-providers>
+	<settings>
+		<personal>OCA\SmartCardTwoFactor\Settings\Personal</personal>
+	</settings>
 </info>
