@@ -3,28 +3,21 @@
 declare(strict_types=1);
 
 
-namespace OCA\SmartCardTwoFactor\Service;
+namespace OCA\SmartCardTwoFactor\Service;;
 
-use OC;
-use OCA\SmartCardTwoFactor\Provider\YubikeyProvider;
-use OCP\Authentication\TwoFactorAuth\IRegistry;
 use OCP\IUser;
-use OCA\SmartCardTwoFactor\Db\YubiKey;
-use OCA\SmartCardTwoFactor\Db\YubiKeyMapper;
-use OCP\AppFramework\Db\DoesNotExistException;
-use OCP\Authentication\TwoFactorAuth\TwoFactorException;
-
-use OCP\Activity\IManager;
-use OCP\ILogger;
-use OCP\IRequest;
-use OCP\ISession;
+use Psr\Log\LoggerInterface;
 
 class SmartCardService
 {
-	/**
-	 * @var string
-	 */
-	private $presharedPassword = "password1234";
+	private $presharedPassword;
+	private $logger;
+
+	public function __construct(LoggerInterface $logger)
+	{
+		$this->logger = $logger;
+		$this->presharedPassword = "password1234";
+	}
 
 	/**
 	 * 
@@ -46,6 +39,9 @@ class SmartCardService
 
 		// if connected is true (successfull)
 		if ($connected) {
+
+			$this->logger->debug("Socket for smart card two factor authentication at (" . $host . ":" . $port . ") created and connected.");
+
 			// get cryptosafe random bytes challenge
 			$challenge = random_bytes(52);
 
@@ -54,14 +50,20 @@ class SmartCardService
 
 			// Read first byte, unpack it into array of integers and take first item
 			// (unpack indexing starts at 1)
-			if (unpack('C*', socket_read($socket, 1))[1]) {
+			$success = unpack('C*', socket_read($socket, 1))[1];
+
+			if ($success) {
 				$response = socket_read($socket, 20);
 				$hash = sha1($challenge . $this->presharedPassword, true);
 				$auth_result = $response == $hash;
+			} else {
+				$this->logger->error("Smart card two factor authentication failed for (" . $host . "). Please check local connector logs for more details.");
 			}
-
-			socket_close($socket);
 		}
+
+		$this->logger->warning("Socket for smart card two factor authentication at (" . $host . ":" . $port . ") created but not connected.");
+
+		socket_close($socket);
 
 		return $auth_result;
 	}
