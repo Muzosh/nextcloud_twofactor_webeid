@@ -1,10 +1,3 @@
 .smartcard-form {
 	margin: 16px auto 1px !important;
 }
-.smartcard-form > input {
-	padding: 10px;
-	margin: 0 0 5px 0;
-}
-.smartcard-form > input[type="tel"] {
-	margin: 0 0 5px 0;
-}

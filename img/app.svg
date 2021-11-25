@@ -1,26 +1,56 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
-   <path style="fill:#EC5565;" d="M512,256.006C512,397.402,397.394,512.004,256.004,512C114.606,512.004,0,397.402,0,256.006
-	C-0.007,114.61,114.606,0,256.004,0C397.394,0,512,114.614,512,256.006z" />
-   <path style="fill:#D94453;" d="M511.679,268.685l-0.745-0.755c-0.036-0.036-0.08-0.06-0.116-0.096L340.545,97.541
-	c-0.033-0.034-0.076-0.058-0.109-0.091l-1.484-1.503c-5.402-5.483-12.896-8.627-20.563-8.627H151.495
-	c-16.005,0-29.033,13.158-29.033,29.328v278.703c0,8.513,3.67,16.125,9.426,21.487c0.512,0.557,91.809,91.847,92.362,92.362
-	c0.284,0.307,0.588,0.59,0.882,0.883c10.128,1.216,20.415,1.917,30.871,1.917C393.142,512.004,505.07,404.188,511.679,268.685z" />
-   <g>
-      <path style="fill:#F6F6F6;" d="M305.507,220.859h-110.01c-9.582,0-16.809,7.921-16.809,18.421v122.631
-		c0,9.904,6.425,20.597,16.809,20.597h110.01c10.096,0,20.777-10.591,20.777-20.597V239.28
-		C326.283,228.902,315.116,220.859,305.507,220.859z M312.226,361.911c0,2.203-4.461,6.541-6.719,6.541h-14.366v-42.17
-		c0-3.885-3.143-7.028-7.028-7.028s-7.028,3.143-7.028,7.028v42.17H256v-42.17c0-3.885-3.143-7.028-7.028-7.028
-		s-7.028,3.143-7.028,7.028v42.17h-14.057v-42.17c0-3.885-3.143-7.028-7.028-7.028s-7.028,3.143-7.028,7.028v42.17h-18.333
-		c-0.645,0-2.752-2.786-2.752-6.541V239.28c0-0.178,0.034-4.365,2.752-4.365h18.333v35.141c0,3.885,3.143,7.028,7.028,7.028
-		s7.028-3.143,7.028-7.028v-35.141h14.057v35.141c0,3.885,3.143,7.028,7.028,7.028s7.028-3.143,7.028-7.028v-35.141h21.085v35.141
-		c0,3.885,3.143,7.028,7.028,7.028s7.028-3.143,7.028-7.028v-35.141h14.366c3.027,0,6.719,2.924,6.719,4.365L312.226,361.911
-		L312.226,361.911z" />
-      <path style="fill:#F6F6F6;" d="M381.068,138.626l-42.115-42.677c-5.402-5.484-12.897-8.627-20.563-8.627H151.495
-		c-16.005,0-29.033,13.157-29.033,29.328v278.702c0,16.171,13.027,29.328,29.033,29.328h209.009
-		c16.005,0,29.033-13.157,29.033-29.328V159.327C389.537,151.509,386.531,144.158,381.068,138.626z M375.481,395.35
-		c0,8.421-6.719,15.271-14.976,15.271H151.495c-8.257,0-14.976-6.85-14.976-15.271V116.65c0-8.421,6.719-15.271,14.976-15.271
-		h166.894c3.987,0,7.735,1.579,10.556,4.441l42.115,42.677c2.807,2.848,4.42,6.795,4.42,10.831V395.35z" />
-   </g>
+<?xml version="1.0"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:svg="http://www.w3.org/2000/svg" id="svg2" viewBox="0 0 449.74 584.74" version="1.1">
+  <defs id="defs4">
+    <filter id="filter3891" color-interpolation-filters="sRGB">
+      <feGaussianBlur id="feGaussianBlur3893" stdDeviation="7.2374999"/>
+    </filter>
+  </defs>
+  <g id="layer1" transform="translate(-152.73 -162.35)">
+    <path id="path3098" filter="url(#filter3891)" fill="#333" d="m200.1 179.72c-16.62 0-30 13.38-30 30v490c0 16.62 13.38 30 30 30h355c16.62 0 30-13.38 30-30v-444.19l-75.781-75.812h-309.22z"/>
+    <path id="rect2816" d="m200.1 179.72c-16.62 0-30 13.38-30 30v490c0 16.62 13.38 30 30 30h355c16.62 0 30-13.38 30-30v-444.19l-75.781-75.812h-309.22z" fill="#ccc"/>
+    <rect id="rect2818" rx="30" ry="30" height="250" width="250" stroke="#000" y="417.44" x="252.24" stroke-width="6" fill="#fc0"/>
+    <path id="path3629" d="m504.24 483v2.875h-73.719l-16.5 16.5v40.625h90.219v2.875h-90.219v40.625l16.5 16.5h73.719v2.875h-74.906l-18.188-18.188 0.25-0.25h-0.25v-85.719h0.5313l-0.5313-0.53125 18.188-18.188h74.906z"/>
+    <path id="rect3596" d="m341.01 585v2.875h34.812v81.562h2.8437v-81.562h34.844v-2.875h-72.5z"/>
+    <path id="rect3598" d="m375.82 418.16v82.844h-34.812v2.875h37.656v-85.719h-2.8437z"/>
+    <path id="rect3602" d="m250.26 483v2.875h73.719l16.5 16.5v40.625h-90.219v2.875h90.219v40.625l-16.5 16.5h-73.719v2.875h74.906l18.188-18.188-0.25-0.25h0.25v-85.719h-0.5312l0.5312-0.53125-18.188-18.188h-74.906z"/>
+  </g>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work>
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <cc:license rdf:resource="http://creativecommons.org/licenses/publicdomain/"/>
+        <dc:publisher>
+          <cc:Agent rdf:about="http://openclipart.org/">
+            <dc:title>Openclipart</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:title>Sim Card - Mobile Phone</dc:title>
+        <dc:date>2010-09-18T09:14:12</dc:date>
+        <dc:description>cell phone, clip art, clipart, communication, hardware, mobile phone, sim card, </dc:description>
+        <dc:source>http://openclipart.org/detail/85345/sim-card---mobile-phone-by-sheikh_tuhin</dc:source>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>sheikh_tuhin</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>cell phone</rdf:li>
+            <rdf:li>clip art</rdf:li>
+            <rdf:li>clipart</rdf:li>
+            <rdf:li>communication</rdf:li>
+            <rdf:li>hardware</rdf:li>
+            <rdf:li>mobile phone</rdf:li>
+            <rdf:li>sim card</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+      <cc:License rdf:about="http://creativecommons.org/licenses/publicdomain/">
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/>
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
 </svg>
