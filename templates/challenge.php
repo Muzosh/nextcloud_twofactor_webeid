@@ -6,7 +6,7 @@ style('twofactor_smartcard', 'style');
 
 <p><?php p('Please insert your smartcard and click on button below.') ?></p>
 
-<form method="POST" class="totp-form">
+<form name="smartcardform" method="POST" class="smartcard-form">
 	<button class="primary two-factor-submit" name="challenge" type="submit">
 		<?php p('Authenticate'); ?>
 	</button>
