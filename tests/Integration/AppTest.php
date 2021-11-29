@@ -1,6 +1,6 @@
 <?php
 
-namespace OCA\SmartCardTwoFactor\Tests\Integration\Controller;
+namespace OCA\TwoFactorSmartCard\Tests\Integration\Controller;
 
 use OCP\AppFramework\App;
 use Test\TestCase;
