@@ -2,24 +2,24 @@
 <svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:svg="http://www.w3.org/2000/svg" id="svg2" viewBox="0 0 449.74 584.74" version="1.1">
   <defs id="defs4">
     <filter id="filter3891" color-interpolation-filters="sRGB">
-      <feGaussianBlur id="feGaussianBlur3893" stdDeviation="7.2374999"/>
+      <feGaussianBlur id="feGaussianBlur3893" stdDeviation="7.2374999" />
     </filter>
   </defs>
   <g id="layer1" transform="translate(-152.73 -162.35)">
-    <path id="path3098" filter="url(#filter3891)" fill="#333" d="m200.1 179.72c-16.62 0-30 13.38-30 30v490c0 16.62 13.38 30 30 30h355c16.62 0 30-13.38 30-30v-444.19l-75.781-75.812h-309.22z"/>
-    <path id="rect2816" d="m200.1 179.72c-16.62 0-30 13.38-30 30v490c0 16.62 13.38 30 30 30h355c16.62 0 30-13.38 30-30v-444.19l-75.781-75.812h-309.22z" fill="#ccc"/>
-    <rect id="rect2818" rx="30" ry="30" height="250" width="250" stroke="#000" y="417.44" x="252.24" stroke-width="6" fill="#fc0"/>
-    <path id="path3629" d="m504.24 483v2.875h-73.719l-16.5 16.5v40.625h90.219v2.875h-90.219v40.625l16.5 16.5h73.719v2.875h-74.906l-18.188-18.188 0.25-0.25h-0.25v-85.719h0.5313l-0.5313-0.53125 18.188-18.188h74.906z"/>
-    <path id="rect3596" d="m341.01 585v2.875h34.812v81.562h2.8437v-81.562h34.844v-2.875h-72.5z"/>
-    <path id="rect3598" d="m375.82 418.16v82.844h-34.812v2.875h37.656v-85.719h-2.8437z"/>
-    <path id="rect3602" d="m250.26 483v2.875h73.719l16.5 16.5v40.625h-90.219v2.875h90.219v40.625l-16.5 16.5h-73.719v2.875h74.906l18.188-18.188-0.25-0.25h0.25v-85.719h-0.5312l0.5312-0.53125-18.188-18.188h-74.906z"/>
+    <path id="path3098" filter="url(#filter3891)" fill="#333" d="m200.1 179.72c-16.62 0-30 13.38-30 30v490c0 16.62 13.38 30 30 30h355c16.62 0 30-13.38 30-30v-444.19l-75.781-75.812h-309.22z" />
+    <path id="rect2816" d="m200.1 179.72c-16.62 0-30 13.38-30 30v490c0 16.62 13.38 30 30 30h355c16.62 0 30-13.38 30-30v-444.19l-75.781-75.812h-309.22z" fill="#ccc" />
+    <rect id="rect2818" rx="30" ry="30" height="250" width="250" stroke="#000" y="417.44" x="252.24" stroke-width="6" fill="#fc0" />
+    <path id="path3629" d="m504.24 483v2.875h-73.719l-16.5 16.5v40.625h90.219v2.875h-90.219v40.625l16.5 16.5h73.719v2.875h-74.906l-18.188-18.188 0.25-0.25h-0.25v-85.719h0.5313l-0.5313-0.53125 18.188-18.188h74.906z" />
+    <path id="rect3596" d="m341.01 585v2.875h34.812v81.562h2.8437v-81.562h34.844v-2.875h-72.5z" />
+    <path id="rect3598" d="m375.82 418.16v82.844h-34.812v2.875h37.656v-85.719h-2.8437z" />
+    <path id="rect3602" d="m250.26 483v2.875h73.719l16.5 16.5v40.625h-90.219v2.875h90.219v40.625l-16.5 16.5h-73.719v2.875h74.906l18.188-18.188-0.25-0.25h0.25v-85.719h-0.5312l0.5312-0.53125-18.188-18.188h-74.906z" />
   </g>
   <metadata>
     <rdf:RDF>
       <cc:Work>
         <dc:format>image/svg+xml</dc:format>
-        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-        <cc:license rdf:resource="http://creativecommons.org/licenses/publicdomain/"/>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <cc:license rdf:resource="http://creativecommons.org/licenses/publicdomain/" />
         <dc:publisher>
           <cc:Agent rdf:about="http://openclipart.org/">
             <dc:title>Openclipart</dc:title>
@@ -47,9 +47,9 @@
         </dc:subject>
       </cc:Work>
       <cc:License rdf:about="http://creativecommons.org/licenses/publicdomain/">
-        <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/>
-        <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/>
-        <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
       </cc:License>
     </rdf:RDF>
   </metadata>
