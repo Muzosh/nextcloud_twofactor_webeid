@@ -14,10 +14,18 @@ function reloadStatus() {
     });
 
     $.when(loading).done(function(data) {
-        if (data[0]) {
-            $('#twofactor_smartcard-status').text("ENABLED");
+        if (!Array.isArray(data) || data.length != 1) {
+            $('#twofactor_smartcard-status').text("Unexpected getStatus() result. Please contact administrator: " + JSON.stringify(data));
         } else {
-            $('#twofactor_smartcard-status').text("DISABLED");
+            let status = data[0];
+            if (status === null) {
+                $('#twofactor_smartcard-status').text("SERVER ERROR");
+            } else if (status) {
+                $('#twofactor_smartcard-status').text("ENABLED");
+            } else {
+                $('#twofactor_smartcard-status').text("DISABLED");
+            }
+
         }
         hideSpinner();
     });

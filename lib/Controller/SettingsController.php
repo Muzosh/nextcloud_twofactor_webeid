@@ -2,12 +2,14 @@
 
 namespace OCA\TwoFactorSmartCard\Controller;
 
+use OCA\TwoFactorSmartCard\AppInfo\Application;
 use OCA\TwoFactorSmartCard\Provider\SmartCardProvider;
 use OCA\TwoFactorSmartCard\Service\SmartCardService;
 use OCP\IRequest;
 use OCP\IUserSession;
 use OCP\AppFramework\Controller;
 use OCP\Authentication\TwoFactorAuth\IRegistry;
+use Psr\Log\LoggerInterface;
 
 class SettingsController extends Controller
 {
@@ -19,13 +21,16 @@ class SettingsController extends Controller
 	/** @var IRegistry */
 	private $registry;
 
-	public function __construct($appName, IRequest $request, IUserSession $userSession, SmartCardService $service, IRegistry $registry, SmartCardProvider $provider)
+	private $logger;
+
+	public function __construct($appName, IRequest $request, IUserSession $userSession, SmartCardService $service, IRegistry $registry, SmartCardProvider $provider, LoggerInterface $logger)
 	{
 		parent::__construct($appName, $request);
 		$this->userSession = $userSession;
 		$this->service = $service;
 		$this->provider = $provider;
 		$this->registry = $registry;
+		$this->logger = $logger;
 	}
 
 	public function setPassword($pass)
@@ -45,8 +50,19 @@ class SettingsController extends Controller
 	public function getStatus()
 	{
 		$user = $this->userSession->getUser();
-		$status = $this->service->hasSecret($user);
+		$statusByCreds = $this->service->hasSecret($user);
+		$statusByRegistry = $this->registry->getProviderStates($user)[Application::APP_NAME];
 
-		return array($status);
+		if ($statusByRegistry === null) {
+			$this->logger->error("Smartcard provider is not recognized at all.");
+			return array(null);
+		}
+
+		if ($statusByCreds !== $statusByRegistry) {
+			$this->logger->error("Status by set credentials does not match status from registry.");
+			return array(null);
+		}
+
+		return array($statusByCreds);
 	}
 }
