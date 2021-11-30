@@ -1,19 +1,20 @@
 <?php
 
-namespace OCA\SmartCardTwoFactor\Provider;
+namespace OCA\TwoFactorSmartCard\Provider;
 
-use OCA\SmartCardTwoFactor\Service\SmartCardService;
-use OCP\Authentication\TwoFactorAuth\IActivatableAtLogin;
-use OCP\Authentication\TwoFactorAuth\IDeactivatableByAdmin;
-use OCP\Authentication\TwoFactorAuth\ILoginSetupProvider;
+use LogicException;
+use OCA\TwoFactorSmartCard\AppInfo\Application;
+use OCA\TwoFactorSmartCard\Service\SmartCardService;
+use OCA\TwoFactorSmartCard\Settings\PersonalSettings;
 use OCP\Authentication\TwoFactorAuth\IPersonalProviderSettings;
 use OCP\Authentication\TwoFactorAuth\IProvider;
 use OCP\Authentication\TwoFactorAuth\IProvidesIcons;
+use OCP\Authentication\TwoFactorAuth\IProvidesPersonalSettings;
 use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\Template;
 
-class SmartCardProvider implements IProvider, IProvidesIcons
+class SmartCardProvider implements IProvider, IProvidesIcons, IProvidesPersonalSettings
 {
 	/** @var SmartCardService */
 	private $smartCardService;
@@ -37,7 +38,7 @@ class SmartCardProvider implements IProvider, IProvidesIcons
 	 */
 	public function getId(): string
 	{
-		return 'smartcard';
+		return Application::APP_NAME;
 	}
 
 	/**
@@ -68,11 +69,7 @@ class SmartCardProvider implements IProvider, IProvidesIcons
 	 */
 	public function getTemplate(IUser $user): Template
 	{
-		// If necessary, this is also the place where you might want
-		// to send out a code via e-mail or SMS.
-
-		// 'challenge' is the name of the template
-		return new Template('twofactor_smartcard', 'challenge');
+		return new Template(Application::APP_NAME, 'challenge');
 	}
 
 	/**
@@ -83,6 +80,10 @@ class SmartCardProvider implements IProvider, IProvidesIcons
 	 */
 	public function verifyChallenge(IUser $user, $challenge): bool
 	{
+		if (!$this->smartCardService->hasSecret($user)) {
+			throw new LogicException("Provider shouldn't be enabled for somebody who doesn't have his password set!");
+		}
+
 		return $this->smartCardService->authenticate($user);
 	}
 
@@ -94,18 +95,21 @@ class SmartCardProvider implements IProvider, IProvidesIcons
 	 */
 	public function isTwoFactorAuthEnabledForUser(IUser $user): bool
 	{
-		// return $this->smartCardService->hasSecret($user);
-		// 2FA is enforced for all users
-		return true;
+		return $this->smartCardService->hasSecret($user);
 	}
 
 	public function getLightIcon(): string
 	{
-		return $this->urlGenerator->imagePath('twofactor_smartcard', 'app.svg');
+		return $this->urlGenerator->imagePath(Application::APP_NAME, 'app.svg');
 	}
 
 	public function getDarkIcon(): string
 	{
-		return $this->urlGenerator->imagePath('twofactor_smartcard', 'app.svg');
+		return $this->urlGenerator->imagePath(Application::APP_NAME, 'app.svg');
+	}
+
+	public function getPersonalSettings(IUser $user): IPersonalProviderSettings
+	{
+		return new PersonalSettings();
 	}
 }
