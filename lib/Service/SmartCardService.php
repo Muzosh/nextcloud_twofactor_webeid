@@ -76,7 +76,6 @@ class SmartCardService
 	 */
 	public function authenticate(IUser $user): bool
 	{
-		return true;
 		// CONFIG:
 		$host = $_SERVER["REMOTE_ADDR"];
 		$port = 5050;
