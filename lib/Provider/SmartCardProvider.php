@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace OCA\TwoFactorSmartCard\Provider;
 
 use LogicException;
@@ -25,8 +27,10 @@ class SmartCardProvider implements IProvider, IProvidesIcons, IProvidesPersonalS
 	/**
 	 * @param SmartCardService $smartCardService
 	 */
-	public function __construct(SmartCardService $smartCardService, IURLGenerator $urlGenerator)
-	{
+	public function __construct(
+		SmartCardService $smartCardService,
+		IURLGenerator $urlGenerator
+	) {
 		$this->smartCardService = $smartCardService;
 		$this->urlGenerator = $urlGenerator;
 	}

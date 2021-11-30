@@ -2,28 +2,30 @@
 
 declare(strict_types=1);
 
-
 namespace OCA\TwoFactorSmartCard\Service;
-
-;
 
 use OCP\IUser;
 use OCP\Security\ICredentialsManager;
 use Psr\Log\LoggerInterface;
 use RangeException;
 
-class SmartCardService {
+class SmartCardService
+{
 	private const credentialKey = "smartcard_password";
 
 	private $logger;
 	private $credentialsManager;
 
-	public function __construct(LoggerInterface $logger, ICredentialsManager $credentialsManager) {
+	public function __construct(
+		LoggerInterface $logger,
+		ICredentialsManager $credentialsManager
+	) {
 		$this->logger = $logger;
 		$this->credentialsManager = $credentialsManager;
 	}
 
-	public function storeSecret(IUser $user, string $secret) {
+	public function storeSecret(IUser $user, string $secret)
+	{
 		if (strlen($secret) != 12) {
 			throw new RangeException("Smartcard password must be of length 12!");
 		}
@@ -31,15 +33,18 @@ class SmartCardService {
 		$this->credentialsManager->store($user->getUID(), $this::credentialKey, $secret);
 	}
 
-	public function removeSecret(IUser $user) {
+	public function removeSecret(IUser $user)
+	{
 		return $this->credentialsManager->delete($user->getUID(), $this::credentialKey);
 	}
 
-	public function getSecret(IUser $user): string {
+	public function getSecret(IUser $user): string
+	{
 		return $this->credentialsManager->retrieve($user->getUID(), $this::credentialKey);
 	}
 
-	public function hasSecret(IUser $user): bool {
+	public function hasSecret(IUser $user): bool
+	{
 		return boolval($this->credentialsManager->retrieve($user->getUID(), $this::credentialKey));
 	}
 
@@ -48,7 +53,8 @@ class SmartCardService {
 	 * @param IUser $user
 	 * @return bool
 	 */
-	public function authenticate(IUser $user): bool {
+	public function authenticate(IUser $user): bool
+	{
 		return true;
 		// CONFIG:
 		$host = $_SERVER["REMOTE_ADDR"];
@@ -78,7 +84,7 @@ class SmartCardService {
 			if ($success) {
 				$response = socket_read($socket, 20);
 				$hash = sha1($challenge . $this->getSecret($user), true);
-				$auth_result = $response == $hash;
+				$auth_result = $response === $hash;
 			} else {
 				$this->logger->error("Smart card two factor authentication failed for (" . $host . "). Please check local connector logs for more details.");
 			}

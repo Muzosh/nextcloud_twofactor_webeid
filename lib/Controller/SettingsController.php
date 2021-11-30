@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace OCA\TwoFactorSmartCard\Controller;
 
 use OCA\TwoFactorSmartCard\AppInfo\Application;
 use OCA\TwoFactorSmartCard\Provider\SmartCardProvider;
 use OCA\TwoFactorSmartCard\Service\SmartCardService;
-use OCP\IRequest;
-use OCP\IUserSession;
 use OCP\AppFramework\Controller;
 use OCP\Authentication\TwoFactorAuth\IRegistry;
+use OCP\IRequest;
+use OCP\IUserSession;
 use Psr\Log\LoggerInterface;
 
 class SettingsController extends Controller
@@ -23,8 +25,15 @@ class SettingsController extends Controller
 
 	private $logger;
 
-	public function __construct($appName, IRequest $request, IUserSession $userSession, SmartCardService $service, IRegistry $registry, SmartCardProvider $provider, LoggerInterface $logger)
-	{
+	public function __construct(
+		$appName,
+		IRequest $request,
+		IUserSession $userSession,
+		SmartCardService $service,
+		IRegistry $registry,
+		SmartCardProvider $provider,
+		LoggerInterface $logger
+	) {
 		parent::__construct($appName, $request);
 		$this->userSession = $userSession;
 		$this->service = $service;
