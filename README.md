@@ -1,4 +1,4 @@
-# Smart Card Two Factor
+# SmartCardTwoFactor
 Place this app in **nextcloud/apps/**
 
 ## Building the app
