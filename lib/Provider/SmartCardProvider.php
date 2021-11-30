@@ -38,7 +38,7 @@ class SmartCardProvider implements IProvider, IProvidesIcons, IProvidesPersonalS
 	 */
 	public function getId(): string
 	{
-		return 'smartcard';
+		return Application::APP_NAME;
 	}
 
 	/**
