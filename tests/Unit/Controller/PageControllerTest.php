@@ -1,12 +1,12 @@
 <?php
 
-namespace OCA\SmartCardTwoFactor\Tests\Unit\Controller;
+namespace OCA\TwoFactorSmartCard\Tests\Unit\Controller;
 
 use PHPUnit_Framework_TestCase;
 
 use OCP\AppFramework\Http\TemplateResponse;
 
-use OCA\SmartCardTwoFactor\Controller\PageController;
+use OCA\TwoFactorSmartCard\Controller\PageController;
 
 
 class PageControllerTest extends PHPUnit_Framework_TestCase {

@@ -7,7 +7,7 @@
 	<version>0.0.1</version>
 	<licence>agpl</licence>
 	<author mail="petr.muzikant@vut.cz">Petr Muzikant</author>
-	<namespace>SmartCardTwoFactor</namespace>
+	<namespace>TwoFactorSmartCard</namespace>
 	<category>security</category>
 	<website>https://github.com/Muzosh/twofactor_smardcard</website>
 	<bugs>https://github.com/Muzosh/twofactor_smartcard/issues</bugs>
@@ -15,6 +15,6 @@
 		<nextcloud min-version="22" max-version="22" />
 	</dependencies>
 	<two-factor-providers>
-		<provider>OCA\SmartCardTwoFactor\Provider\SmartCardProvider</provider>
+		<provider>OCA\TwoFactorSmartCard\Provider\SmartCardProvider</provider>
 	</two-factor-providers>
 </info>
