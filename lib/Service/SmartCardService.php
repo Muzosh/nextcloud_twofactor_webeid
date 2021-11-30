@@ -34,7 +34,10 @@ class SmartCardService
 {
 	private const credentialKey = "smartcard_password";
 
+	/** @var LoggerInterface */
 	private $logger;
+
+	/** @var ICredentialsManager */
 	private $credentialsManager;
 
 	public function __construct(
@@ -45,6 +48,10 @@ class SmartCardService
 		$this->credentialsManager = $credentialsManager;
 	}
 
+	/**
+	 * @param IUser $user
+	 * @param string $secret
+	 */
 	public function storeSecret(IUser $user, string $secret)
 	{
 		if (strlen($secret) != 12) {
@@ -54,23 +61,33 @@ class SmartCardService
 		$this->credentialsManager->store($user->getUID(), $this::credentialKey, $secret);
 	}
 
+	/**
+	 * @param IUser $user
+	 */
 	public function removeSecret(IUser $user)
 	{
 		return $this->credentialsManager->delete($user->getUID(), $this::credentialKey);
 	}
 
+	/**
+	 * @param IUser $user
+	 * @return string
+	 */
 	public function getSecret(IUser $user): string
 	{
 		return $this->credentialsManager->retrieve($user->getUID(), $this::credentialKey);
 	}
 
+	/**
+	 * @param IUser $user
+	 * @return bool
+	 */
 	public function hasSecret(IUser $user): bool
 	{
 		return boolval($this->credentialsManager->retrieve($user->getUID(), $this::credentialKey));
 	}
 
 	/**
-	 *
 	 * @param IUser $user
 	 * @return bool
 	 */

@@ -102,6 +102,7 @@ class SmartCardProvider implements IProvider, IProvidesIcons, IProvidesPersonalS
 	 *
 	 * @param IUser $user
 	 * @param string $challenge
+	 * @return bool
 	 */
 	public function verifyChallenge(IUser $user, $challenge): bool
 	{
@@ -123,16 +124,26 @@ class SmartCardProvider implements IProvider, IProvidesIcons, IProvidesPersonalS
 		return $this->smartCardService->hasSecret($user);
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getLightIcon(): string
 	{
 		return $this->urlGenerator->imagePath(Application::APP_NAME, 'app.svg');
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getDarkIcon(): string
 	{
 		return $this->urlGenerator->imagePath(Application::APP_NAME, 'app.svg');
 	}
 
+	/**
+	 * @param IUser $user
+	 * @return IPersonalProviderSettings
+	 */
 	public function getPersonalSettings(IUser $user): IPersonalProviderSettings
 	{
 		return new PersonalSettings();

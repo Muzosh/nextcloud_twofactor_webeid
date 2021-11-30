@@ -36,6 +36,7 @@ use Psr\Log\LoggerInterface;
 
 class SettingsController extends Controller
 {
+	/** @var SmartCardService */
 	private $service;
 
 	/** @var IUserSession */
@@ -44,8 +45,18 @@ class SettingsController extends Controller
 	/** @var IRegistry */
 	private $registry;
 
+	/** @var LoggerInterface */
 	private $logger;
 
+	/**
+	 * @param string $appName
+	 * @param IRequest $request
+	 * @param IUserSession $userSession
+	 * @param SmartCardService $service
+	 * @param IRegistry $registry
+	 * @param SmartCardProvider $provider
+	 * @param LoggerInterface $logger
+	 */
 	public function __construct(
 		$appName,
 		IRequest $request,
@@ -63,6 +74,12 @@ class SettingsController extends Controller
 		$this->logger = $logger;
 	}
 
+	/**
+	 * @NoAdminRequired
+	 * @PasswordConfirmationRequired
+	 * 
+	 * @param string $pass
+	 */
 	public function setPassword($pass)
 	{
 		$user = $this->userSession->getUser();
@@ -70,6 +87,10 @@ class SettingsController extends Controller
 		$this->registry->enableProviderFor($this->provider, $user);
 	}
 
+	/**
+	 * @NoAdminRequired
+	 * @PasswordConfirmationRequired
+	 */
 	public function deletePassword()
 	{
 		$user = $this->userSession->getUser();
@@ -77,6 +98,11 @@ class SettingsController extends Controller
 		$this->registry->disableProviderFor($this->provider, $user);
 	}
 
+	/**
+	 * @NoAdminRequired
+	 *
+	 * @return array $statusByRegistry
+	 */
 	public function getStatus()
 	{
 		$user = $this->userSession->getUser();
@@ -93,6 +119,6 @@ class SettingsController extends Controller
 			return array(null);
 		}
 
-		return array($statusByCreds);
+		return array($statusByRegistry);
 	}
 }
