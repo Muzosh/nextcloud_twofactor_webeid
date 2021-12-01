@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <info xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
 	<id>twofactor_smartcard</id>
-	<name>SmartCardTwoFactor</name>
+	<name>Smart Card Two Factor</name>
 	<summary>Smart card two-factor authentication</summary>
 	<description>temp description</description>
 	<version>0.0.1</version>
