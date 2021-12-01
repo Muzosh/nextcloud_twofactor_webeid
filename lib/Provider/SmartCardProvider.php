@@ -73,7 +73,7 @@ class SmartCardProvider implements IProvider, IProvidesIcons, IProvidesPersonalS
 	 */
 	public function getDisplayName(): string
 	{
-		return 'SmartCardTwoFactor';
+		return 'Smart Card Two Factor';
 	}
 
 	/**
