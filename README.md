@@ -1,6 +1,13 @@
 # Smart Card Two Factor
-Place this app in **nextcloud/apps/**
+* place entire `twofactor_smartcard` folder into `<nextcloud-install-location>/apps/`
+* enable the app in Nextcloud Apps page in admin settings
+* go to settings->Security and set new pre-shared secret for the smartcard
+* log out
+* log in
+* start `connector.py` on your machine and click **Authenticate button**
 
+
+## (DONT DO THE FOLLOWING - building the app is only used for App Store publishing)
 ## Building the app
 
 The app can be built by using the provided Makefile by running:
