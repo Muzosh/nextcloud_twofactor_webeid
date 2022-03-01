@@ -85,15 +85,16 @@ $(document).ready(function() {
                     "Message: Password was saved."
                 );
                 $("#twofactor_smartcard-settings-msg").show();
+                reloadStatus();
             })
             .fail(function() {
                 $("#twofactor_smartcard-settings-msg").text(
                     "Message: Some ERROR occured!"
                 );
                 $("#twofactor_smartcard-settings-msg").show();
+                reloadStatus();
             });
 
-        reloadStatus();
     });
 
     $("#twofactor_smartcard-delete-button").click(function() {
@@ -113,15 +114,15 @@ $(document).ready(function() {
                     "Message: Password was deleted."
                 );
                 $("#twofactor_smartcard-settings-msg").show();
+                reloadStatus();
             })
             .fail(function() {
                 $("#twofactor_smartcard-settings-msg").text(
                     "Some ERROR occured!"
                 );
                 $("#twofactor_smartcard-settings-msg").show();
+                reloadStatus();
             });
-
-        reloadStatus();
     });
 
     reloadStatus();
