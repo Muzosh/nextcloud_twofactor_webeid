@@ -1,12 +1,12 @@
 <?php
 
-namespace OCA\TwoFactorSmartCard\Tests\Unit\Controller;
+namespace OCA\TwoFactorWebEid\Tests\Unit\Controller;
 
 use PHPUnit_Framework_TestCase;
 
 use OCP\AppFramework\Http\TemplateResponse;
 
-use OCA\TwoFactorSmartCard\Controller\PageController;
+use OCA\TwoFactorWebEid\Controller\PageController;
 
 
 class PageControllerTest extends PHPUnit_Framework_TestCase {
@@ -17,7 +17,7 @@ class PageControllerTest extends PHPUnit_Framework_TestCase {
 		$request = $this->getMockBuilder('OCP\IRequest')->getMock();
 
 		$this->controller = new PageController(
-			'twofactor_smartcard', $request, $this->userId
+			'twofactor_webeid', $request, $this->userId
 		);
 	}
 

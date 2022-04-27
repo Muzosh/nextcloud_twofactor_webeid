@@ -23,13 +23,13 @@
 
 declare(strict_types=1);
 
-namespace OCA\TwoFactorSmartCard\AppInfo;
+namespace OCA\TwoFactorWebEid\AppInfo;
 
 use OCP\AppFramework\App;
 
 class Application extends App
 {
-	public const APP_NAME = 'twofactor_smartcard';
+	public const APP_NAME = 'twofactor_webeid';
 
 	public function __construct(array $urlParams = [])
 	{

@@ -1,6 +1,6 @@
 {
-    "name": "Smart Card Two Factor",
-    "description": "Smart card two-factor authentication",
+    "name": "Web-eID smart-card 2FA",
+    "description": "Web-eID two-factor authentication",
     "type": "project",
     "license": "AGPL",
     "authors": [{

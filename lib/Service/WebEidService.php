@@ -23,16 +23,16 @@
 
 declare(strict_types=1);
 
-namespace OCA\TwoFactorSmartCard\Service;
+namespace OCA\TwoFactorWebEid\Service;
 
 use OCP\IUser;
 use OCP\Security\ICredentialsManager;
 use Psr\Log\LoggerInterface;
 use RangeException;
 
-class SmartCardService
+class WebEidService
 {
-	private const credentialKey = "smartcard_password";
+	private const credentialKey = "webeid_password";
 
 	/** @var LoggerInterface */
 	private $logger;
@@ -55,7 +55,7 @@ class SmartCardService
 	public function storeSecret(IUser $user, string $secret)
 	{
 		if (strlen($secret) != 12) {
-			throw new RangeException("Smartcard password must be of length 12!");
+			throw new RangeException("WebEid password must be of length 12!");
 		}
 
 		$this->credentialsManager->store($user->getUID(), $this::credentialKey, $secret);

@@ -23,9 +23,9 @@
 
 declare(strict_types=1);
 
-namespace OCA\TwoFactorSmartCard\Settings;
+namespace OCA\TwoFactorWebEid\Settings;
 
-use OCA\TwoFactorSmartCard\AppInfo\Application;
+use OCA\TwoFactorWebEid\AppInfo\Application;
 use OCP\Authentication\TwoFactorAuth\IPersonalProviderSettings;
 use OCP\Template;
 

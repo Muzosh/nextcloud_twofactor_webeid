@@ -23,11 +23,11 @@
 
 declare(strict_types=1);
 
-namespace OCA\TwoFactorSmartCard\Controller;
+namespace OCA\TwoFactorWebEid\Controller;
 
-use OCA\TwoFactorSmartCard\AppInfo\Application;
-use OCA\TwoFactorSmartCard\Provider\SmartCardProvider;
-use OCA\TwoFactorSmartCard\Service\SmartCardService;
+use OCA\TwoFactorWebEid\AppInfo\Application;
+use OCA\TwoFactorWebEid\Provider\WebEidProvider;
+use OCA\TwoFactorWebEid\Service\WebEidService;
 use OCP\AppFramework\Controller;
 use OCP\Authentication\TwoFactorAuth\IRegistry;
 use OCP\IRequest;
@@ -36,7 +36,7 @@ use Psr\Log\LoggerInterface;
 
 class SettingsController extends Controller
 {
-	/** @var SmartCardService */
+	/** @var WebEidService */
 	private $service;
 
 	/** @var IUserSession */
@@ -52,18 +52,18 @@ class SettingsController extends Controller
 	 * @param string $appName
 	 * @param IRequest $request
 	 * @param IUserSession $userSession
-	 * @param SmartCardService $service
+	 * @param WebEidService $service
 	 * @param IRegistry $registry
-	 * @param SmartCardProvider $provider
+	 * @param WebEidProvider $provider
 	 * @param LoggerInterface $logger
 	 */
 	public function __construct(
 		$appName,
 		IRequest $request,
 		IUserSession $userSession,
-		SmartCardService $service,
+		WebEidService $service,
 		IRegistry $registry,
-		SmartCardProvider $provider,
+		WebEidProvider $provider,
 		LoggerInterface $logger
 	) {
 		parent::__construct($appName, $request);
@@ -110,7 +110,7 @@ class SettingsController extends Controller
 		$statusByRegistry = $this->registry->getProviderStates($user)[Application::APP_NAME];
 
 		if ($statusByRegistry === null) {
-			$this->logger->error("Smartcard provider is not recognized at all.");
+			$this->logger->error("WebEid provider is not recognized at all.");
 			return array(null);
 		}
 
