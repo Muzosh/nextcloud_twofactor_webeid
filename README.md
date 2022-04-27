@@ -1,5 +1,5 @@
-# Smart Card Two Factor
-* place entire `twofactor_smartcard` folder into `<nextcloud-install-location>/apps/`
+# Web-eID 2FA authentication
+* place entire `twofactor_webeid` folder into `<nextcloud-install-location>/apps/`
 * enable the app in Nextcloud Apps page in admin settings
 * go to settings->Security and set new pre-shared secret for the smartcard
 * log out

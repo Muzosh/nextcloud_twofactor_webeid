@@ -23,12 +23,12 @@
 
 declare(strict_types=1);
 
-namespace OCA\TwoFactorSmartCard\Provider;
+namespace OCA\TwoFactorWebEid\Provider;
 
 use LogicException;
-use OCA\TwoFactorSmartCard\AppInfo\Application;
-use OCA\TwoFactorSmartCard\Service\SmartCardService;
-use OCA\TwoFactorSmartCard\Settings\PersonalSettings;
+use OCA\TwoFactorWebEid\AppInfo\Application;
+use OCA\TwoFactorWebEid\Service\WebEidService;
+use OCA\TwoFactorWebEid\Settings\PersonalSettings;
 use OCP\Authentication\TwoFactorAuth\IPersonalProviderSettings;
 use OCP\Authentication\TwoFactorAuth\IProvider;
 use OCP\Authentication\TwoFactorAuth\IProvidesIcons;
@@ -37,22 +37,22 @@ use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\Template;
 
-class SmartCardProvider implements IProvider, IProvidesIcons, IProvidesPersonalSettings
+class WebEidProvider implements IProvider, IProvidesIcons, IProvidesPersonalSettings
 {
-	/** @var SmartCardService */
-	private $smartCardService;
+	/** @var WebEidService */
+	private $webEidService;
 
 	/** @var IURLGenerator */
 	private $urlGenerator;
 
 	/**
-	 * @param SmartCardService $smartCardService
+	 * @param WebEidService $webEidService
 	 */
 	public function __construct(
-		SmartCardService $smartCardService,
+		WebEidService $webEidService,
 		IURLGenerator $urlGenerator
 	) {
-		$this->smartCardService = $smartCardService;
+		$this->webEidService = $webEidService;
 		$this->urlGenerator = $urlGenerator;
 	}
 
@@ -106,11 +106,11 @@ class SmartCardProvider implements IProvider, IProvidesIcons, IProvidesPersonalS
 	 */
 	public function verifyChallenge(IUser $user, $challenge): bool
 	{
-		if (!$this->smartCardService->hasSecret($user)) {
+		if (!$this->webEidService->hasSecret($user)) {
 			throw new LogicException("Provider shouldn't be enabled for somebody who doesn't have his password set!");
 		}
 
-		return $this->smartCardService->authenticate($user);
+		return $this->webEidService->authenticate($user);
 	}
 
 	/**
@@ -121,7 +121,7 @@ class SmartCardProvider implements IProvider, IProvidesIcons, IProvidesPersonalS
 	 */
 	public function isTwoFactorAuthEnabledForUser(IUser $user): bool
 	{
-		return $this->smartCardService->hasSecret($user);
+		return $this->webEidService->hasSecret($user);
 	}
 
 	/**
