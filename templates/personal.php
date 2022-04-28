@@ -1,6 +1,6 @@
 <?php
-style('twofactor_webeid', 'webeid-personal');
-script('twofactor_webeid', 'webeid-personal');
+// style('twofactor_webeid', 'webeid-personal');
+// script('twofactor_webeid', 'webeid-personal');
 ?>
 
 <span><?php p('Create new smartcard password:') ?></span>

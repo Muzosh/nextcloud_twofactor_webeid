@@ -26,8 +26,11 @@ declare(strict_types=1);
 namespace OCA\TwoFactorWebEid\AppInfo;
 
 use OCP\AppFramework\App;
+use OCP\AppFramework\Bootstrap\IBootContext;
+use OCP\AppFramework\Bootstrap\IBootstrap;
+use OCP\AppFramework\Bootstrap\IRegistrationContext;
 
-class Application extends App
+class Application extends App implements IBootstrap
 {
 	public const APP_NAME = 'twofactor_webeid';
 
@@ -35,4 +38,10 @@ class Application extends App
 	{
 		parent::__construct(self::APP_NAME, $urlParams);
 	}
+
+	public function register(IRegistrationContext $context): void {
+		// include_once __DIR__ . '/../../vendor/autoload.php';
+	}
+
+	public function boot(IBootContext $context): void { }
 }

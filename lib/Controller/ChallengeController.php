@@ -21,8 +21,28 @@
  *
  */
 
-return [
-	'routes' => [
-		['name' => 'challenge#getchallenge', 'url' => '/auth/challenge', 'verb' => 'GET'],
-	]
-];
+declare(strict_types=1);
+
+namespace OCA\TwoFactorWebEid\Controller;
+
+use OCP\AppFramework\Controller;
+use OCP\IRequest;
+
+class ChallengeController extends Controller
+{
+	/**
+	 * @param string $appName
+	 * @param IRequest $request
+	 */
+	public function __construct(
+		$appName,
+		IRequest $request
+	) {
+		parent::__construct($appName, $request);
+	}
+
+	public function getchallenge()
+	{
+		return array("nonce"=>"testNonce");
+	}
+}
