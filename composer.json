@@ -1,5 +1,5 @@
 {
-    "name": "Web-eID smart-card 2FA",
+    "name": "muzosh/twofactor_webeid",
     "description": "Web-eID two-factor authentication",
     "type": "project",
     "license": "AGPL",
@@ -9,6 +9,13 @@
     "require": {},
     "require-dev": {
         "phpunit/phpunit": "^5.4",
-        "nextcloud/coding-standard": "^1.0"
-    }
+        "nextcloud/coding-standard": "^1.0",
+        "muzosh/web_eid_authtoken_validation_php": "dev-development"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/Muzosh/web-eid-authtoken-validation-php"
+        }
+    ]
 }
