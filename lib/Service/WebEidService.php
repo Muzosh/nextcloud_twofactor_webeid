@@ -1,9 +1,7 @@
 <?php
 
 /**
- *
  * @copyright Copyright (c) 2021, Petr Muzikant (petr.muzikant@vut.cz)
- *
  * @license GNU AGPL version 3 or any later version
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,118 +16,78 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- *
  */
 
 declare(strict_types=1);
 
 namespace OCA\TwoFactorWebEid\Service;
 
+use GuzzleHttp\Psr7\Uri;
+use muzosh\web_eid_authtoken_validation_php\certificate\CertificateLoader;
+use muzosh\web_eid_authtoken_validation_php\challenge\ChallengeNonceGenerator;
+use muzosh\web_eid_authtoken_validation_php\challenge\ChallengeNonceGeneratorBuilder;
+use muzosh\web_eid_authtoken_validation_php\challenge\ChallengeNonceStore;
+use muzosh\web_eid_authtoken_validation_php\validator\AuthTokenValidator;
+use muzosh\web_eid_authtoken_validation_php\validator\AuthTokenValidatorBuilder;
+use OCP\ISession;
 use OCP\IUser;
-use OCP\Security\ICredentialsManager;
 use Psr\Log\LoggerInterface;
-use RangeException;
 
 class WebEidService
 {
-	private const credentialKey = "webeid_password";
+    private const CHALLENGE_NONCE_TTL_SECONDS = 300;
 
-	/** @var LoggerInterface */
-	private $logger;
+    /** @var ISession */
+    private $session;
 
-	/** @var ICredentialsManager */
-	private $credentialsManager;
+    /** @var LoggerInterface */
+    private $logger;
 
-	public function __construct(
-		LoggerInterface $logger,
-		ICredentialsManager $credentialsManager
-	) {
-		$this->logger = $logger;
-		$this->credentialsManager = $credentialsManager;
-	}
+    public function __construct(
+        ISession $session,
+        LoggerInterface $logger
+    ) {
+        $this->session = $session;
+        $this->logger = $logger;
+    }
 
-	/**
-	 * @param IUser $user
-	 * @param string $secret
-	 */
-	public function storeSecret(IUser $user, string $secret)
-	{
-		if (strlen($secret) != 12) {
-			throw new RangeException("WebEid password must be of length 12!");
-		}
+    public function getSessionBasedChallengeNonceStore(): ChallengeNonceStore
+    {
+        return new SessionBackedChallengeNonceStore($this->session);
+    }
 
-		$this->credentialsManager->store($user->getUID(), $this::credentialKey, $secret);
-	}
+    public function getGenerator(ChallengeNonceStore $challengeNonceStore): ChallengeNonceGenerator
+    {
+        return (new ChallengeNonceGeneratorBuilder())
+            ->withNonceTtl(self::CHALLENGE_NONCE_TTL_SECONDS)
+            ->withChallengeNonceStore($challengeNonceStore)
+            ->build()
+        ;
+    }
 
-	/**
-	 * @param IUser $user
-	 */
-	public function removeSecret(IUser $user)
-	{
-		return $this->credentialsManager->delete($user->getUID(), $this::credentialKey);
-	}
+    public function loadTrustedCACertificatesFromCertFiles(): array
+    {
+        // TODO: put cert path into config
+        $pathnames = array_map(
+            'basename',
+            glob(__DIR__.'/../../trustedcerts/*.{crt,cer,pem,der}', GLOB_BRACE)
+        );
 
-	/**
-	 * @param IUser $user
-	 * @return string
-	 */
-	public function getSecret(IUser $user): string
-	{
-		return $this->credentialsManager->retrieve($user->getUID(), $this::credentialKey);
-	}
+        return CertificateLoader::loadCertificatesFromPath(__DIR__.'/../../trustedcerts', ...$pathnames);
+    }
 
-	/**
-	 * @param IUser $user
-	 * @return bool
-	 */
-	public function hasSecret(IUser $user): bool
-	{
-		return boolval($this->credentialsManager->retrieve($user->getUID(), $this::credentialKey));
-	}
+    public function getValidator(): AuthTokenValidator
+    {
+        // TODO: put site-origin into config
+        return (new AuthTokenValidatorBuilder())
+            ->withSiteOrigin(new Uri('https://'.$_SERVER['SERVER_ADDR']))
+            ->withTrustedCertificateAuthorities(...self::loadTrustedCACertificatesFromCertFiles())
+            ->build()
+        ;
+    }
 
-	/**
-	 * @param IUser $user
-	 * @return bool
-	 */
-	public function authenticate(IUser $user): bool
-	{
-		// CONFIG:
-		$host = $_SERVER["REMOTE_ADDR"];
-		$port = 5050;
-
-		// Create socket, set timeout and connect
-		$socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-		socket_set_option($socket, SOL_SOCKET, SO_SNDTIMEO, array('sec' => 1, 'usec' => 500000));
-		$connected = socket_connect($socket, $host, $port);
-
-		$auth_result = false;
-
-		// if connected is true (successfull)
-		if ($connected) {
-			$this->logger->debug("Socket for smart card two factor authentication at (" . $host . ":" . $port . ") created and connected.");
-
-			// get cryptosafe random bytes challenge
-			$challenge = random_bytes(52);
-
-			// send challenge via socket
-			socket_send($socket, $challenge, 52, 0);
-
-			// Read first byte, unpack it into array of integers and take first item
-			// (unpack indexing starts at 1)
-			$success = unpack('C*', socket_read($socket, 1))[1];
-
-			if ($success) {
-				$response = socket_read($socket, 20);
-				$hash = sha1($challenge . $this->getSecret($user), true);
-				$auth_result = $response === $hash;
-			} else {
-				$this->logger->error("Smart card two factor authentication failed for (" . $host . "). Please check local connector logs for more details.");
-			}
-		}
-
-		$this->logger->warning("Socket for smart card two factor authentication at (" . $host . ":" . $port . ") created but not connected.");
-
-		socket_close($socket);
-		return $auth_result;
-	}
+    public function authenticate(IUser $user): bool
+    {
+        return false;
+    }
 }

@@ -22,47 +22,62 @@ declare(strict_types=1);
 
 namespace OCA\TwoFactorWebEid\Provider;
 
-use LogicException;
+use muzosh\web_eid_authtoken_validation_php\authtoken\WebEidAuthToken;
+use muzosh\web_eid_authtoken_validation_php\certificate\CertificateData;
+use muzosh\web_eid_authtoken_validation_php\challenge\ChallengeNonceGenerator;
+use muzosh\web_eid_authtoken_validation_php\challenge\ChallengeNonceStore;
+use muzosh\web_eid_authtoken_validation_php\exceptions\AuthTokenException;
+use muzosh\web_eid_authtoken_validation_php\validator\AuthTokenValidator;
 use OCA\TwoFactorWebEid\AppInfo\Application;
 use OCA\TwoFactorWebEid\Service\WebEidService;
 use OCP\Authentication\TwoFactorAuth\IActivatableByAdmin;
 use OCP\Authentication\TwoFactorAuth\IDeactivatableByAdmin;
 use OCP\Authentication\TwoFactorAuth\IProvider;
 use OCP\Authentication\TwoFactorAuth\IProvidesIcons;
-use OCP\Authentication\TwoFactorAuth\IRegistry;
 use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\Template;
+use Psr\Log\LoggerInterface;
 
 class WebEidProvider implements IProvider, IProvidesIcons, IActivatableByAdmin, IDeactivatableByAdmin
 {
-    /** @var WebEidService */
-    private $webEidService;
+    /** @var LoggerInterface */
+    private $logger;
 
     /** @var IURLGenerator */
     private $urlGenerator;
 
-    /** @var IRegistry */
-    private $registry;
+    /** @var WebEidService */
+    private $webEidService;
+
+    /** @var ChallengeNonceGenerator */
+    private $generator;
+
+    /** @var ChallengeNonceStore */
+    private $nonceStore;
+
+    /** @var AuthTokenValidator */
+    private $validator;
 
     public function __construct(
-        WebEidService $webEidService,
+        LoggerInterface $logger,
         IURLGenerator $urlGenerator,
-		IRegistry $registry
+        WebEidService $webEidService
     ) {
-        $this->webEidService = $webEidService;
+        $this->logger = $logger;
         $this->urlGenerator = $urlGenerator;
-		$this->registry = $registry;
+        $this->webEidService = $webEidService;
+        $this->nonceStore = $this->webEidService->getSessionBasedChallengeNonceStore();
+        $this->generator = $this->webEidService->getGenerator($this->nonceStore);
+        $this->validator = $this->webEidService->getValidator();
     }
 
-    public function enableFor(IUser $user)
+    public function enableFor(IUser $user): void
     {
-		$this->registry->enableProviderFor($this, $user);
     }
 
-    public function disableFor(IUser $user)
+    public function disableFor(IUser $user): void
     {
-		$this->registry->disableProviderFor($this, $user);
     }
 
     /**
@@ -94,7 +109,12 @@ class WebEidProvider implements IProvider, IProvidesIcons, IActivatableByAdmin, 
      */
     public function getTemplate(IUser $user): Template
     {
-        return new Template(Application::APP_NAME, 'challenge');
+        $challengeNonce = $this->generator->generateAndStoreNonce();
+
+        $template = new Template(Application::APP_NAME, 'challenge');
+        $template->append('nonce', $challengeNonce->getBase64EncodedNonce());
+
+        return $template;
     }
 
     /**
@@ -104,11 +124,24 @@ class WebEidProvider implements IProvider, IProvidesIcons, IActivatableByAdmin, 
      */
     public function verifyChallenge(IUser $user, $challenge): bool
     {
-        if (!$this->webEidService->hasSecret($user)) {
-            //throw new LogicException("Provider shouldn't be enabled for somebody who doesn't have his password set!");
+        $challengeNonce = $this->nonceStore->getAndRemove();
+        if (is_null($challengeNonce)) {
+            // TODO: handle it
+            return false;
         }
 
-        return false;//$this->webEidService->authenticate($user);
+        try {
+            $cert = $this->validator->validate(
+                new WebEidAuthToken($challenge),
+                $challengeNonce->getBase64EncodedNonce()
+            );
+
+            return 'JÕEORG,JAAK-KRISTJAN,38001085718' === CertificateData::getSubjectCN($cert);
+        } catch (AuthTokenException $e) {
+            $this->logger->error('WebEid authentication token validation unsuccessful: '.$e->getMessage(), $e->getTrace());
+
+            return false;
+        }
     }
 
     /**
@@ -116,7 +149,7 @@ class WebEidProvider implements IProvider, IProvidesIcons, IActivatableByAdmin, 
      */
     public function isTwoFactorAuthEnabledForUser(IUser $user): bool
     {
-        return $this->webEidService->hasSecret($user);
+        return true;
     }
 
     public function getLightIcon(): string

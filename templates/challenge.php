@@ -9,9 +9,10 @@ script('twofactor_webeid', 'web-eid-challenge');
 <p><?php p('Custom Web-eID solution must be installed on your machine!') ?></p>
 <p><?php p('Please insert your smartcard and click on button below.') ?></p>
 
-<form name="webeidform" method="POST" class="webeid-form">
-	<input id="webeid-challenge" name="challenge" type="text" hidden="true" value="testValue" readonly="readonly">
-	<button id="webeid-submit" name="authenticate" class="primary two-factor-submit" type="button">
+<form id="webeid-form" method="POST" class="webeid-form">
+	<input id="webeid-nonce" type="text" hidden="true" value="<?php p($_['nonce'][0]) ?>" readonly="readonly">
+	<input id="webeid-token" type="text" name="challenge" hidden="true" value="">
+	<button id="webeid-authenticate" class="primary two-factor-submit" type="button">
 		<?php p('Authenticate'); ?>
 	</button>
 </form>
