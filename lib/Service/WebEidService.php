@@ -82,6 +82,7 @@ class WebEidService
         return (new AuthTokenValidatorBuilder())
             ->withSiteOrigin(new Uri('https://'.$_SERVER['SERVER_ADDR']))
             ->withTrustedCertificateAuthorities(...self::loadTrustedCACertificatesFromCertFiles())
+            ->withoutUserCertificateRevocationCheckWithOcsp()
             ->build()
         ;
     }

@@ -136,7 +136,7 @@ class WebEidProvider implements IProvider, IProvidesIcons, IActivatableByAdmin, 
                 $challengeNonce->getBase64EncodedNonce()
             );
 
-            return 'JÕEORG,JAAK-KRISTJAN,38001085718' === CertificateData::getSubjectCN($cert);
+            return $user->getUID() == CertificateData::getSubjectCN($cert);
         } catch (AuthTokenException $e) {
             $this->logger->error('WebEid authentication token validation unsuccessful: '.$e->getMessage(), $e->getTrace());
 
