@@ -88,7 +88,7 @@ class WebEidProvider implements IProvider, IProvidesIcons, IActivatableByAdmin, 
      */
     public function getDisplayName(): string
     {
-        return 'Web-eID smart-card 2FA';
+        return 'Web-eID 2FA';
     }
 
     /**
@@ -96,7 +96,7 @@ class WebEidProvider implements IProvider, IProvidesIcons, IActivatableByAdmin, 
      */
     public function getDescription(): string
     {
-        return 'temp description';
+        return 'This provider enables second authentication factor using Web-eID.';
     }
 
     /**
@@ -109,7 +109,7 @@ class WebEidProvider implements IProvider, IProvidesIcons, IActivatableByAdmin, 
         );
         $challengeNonce = $generator->generateAndStoreNonce();
 
-        $template = new Template(Application::APP_NAME, 'challenge');
+        $template = new Template(Application::APP_NAME, 'WebEidChallenge');
         $template->append('nonce', $challengeNonce->getBase64EncodedNonce());
 
         return $template;
