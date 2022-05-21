@@ -78,17 +78,12 @@ class WebEidService
 
     public function getValidator(): AuthTokenValidator
     {
-        // TODO: put site-origin into config
+        // TODO: put site-origin into config?
         return (new AuthTokenValidatorBuilder())
             ->withSiteOrigin(new Uri('https://'.$_SERVER['SERVER_ADDR']))
             ->withTrustedCertificateAuthorities(...self::loadTrustedCACertificatesFromCertFiles())
             ->withoutUserCertificateRevocationCheckWithOcsp()
             ->build()
         ;
-    }
-
-    public function authenticate(IUser $user): bool
-    {
-        return false;
     }
 }

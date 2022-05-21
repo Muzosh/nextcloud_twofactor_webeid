@@ -24,10 +24,7 @@ namespace OCA\TwoFactorWebEid\Provider;
 
 use muzosh\web_eid_authtoken_validation_php\authtoken\WebEidAuthToken;
 use muzosh\web_eid_authtoken_validation_php\certificate\CertificateData;
-use muzosh\web_eid_authtoken_validation_php\challenge\ChallengeNonceGenerator;
-use muzosh\web_eid_authtoken_validation_php\challenge\ChallengeNonceStore;
 use muzosh\web_eid_authtoken_validation_php\exceptions\AuthTokenException;
-use muzosh\web_eid_authtoken_validation_php\validator\AuthTokenValidator;
 use OCA\TwoFactorWebEid\AppInfo\Application;
 use OCA\TwoFactorWebEid\Service\WebEidService;
 use OCP\Authentication\TwoFactorAuth\IActivatableByAdmin;
@@ -50,15 +47,6 @@ class WebEidProvider implements IProvider, IProvidesIcons, IActivatableByAdmin, 
     /** @var WebEidService */
     private $webEidService;
 
-    /** @var ChallengeNonceGenerator */
-    private $generator;
-
-    /** @var ChallengeNonceStore */
-    private $nonceStore;
-
-    /** @var AuthTokenValidator */
-    private $validator;
-
     public function __construct(
         LoggerInterface $logger,
         IURLGenerator $urlGenerator,
@@ -67,9 +55,6 @@ class WebEidProvider implements IProvider, IProvidesIcons, IActivatableByAdmin, 
         $this->logger = $logger;
         $this->urlGenerator = $urlGenerator;
         $this->webEidService = $webEidService;
-        $this->nonceStore = $this->webEidService->getSessionBasedChallengeNonceStore();
-        $this->generator = $this->webEidService->getGenerator($this->nonceStore);
-        $this->validator = $this->webEidService->getValidator();
     }
 
     public function enableFor(IUser $user): void
@@ -109,7 +94,7 @@ class WebEidProvider implements IProvider, IProvidesIcons, IActivatableByAdmin, 
      */
     public function getTemplate(IUser $user): Template
     {
-        $challengeNonce = $this->generator->generateAndStoreNonce();
+        $challengeNonce = $this->webEidService->getGenerator->generateAndStoreNonce();
 
         $template = new Template(Application::APP_NAME, 'challenge');
         $template->append('nonce', $challengeNonce->getBase64EncodedNonce());
@@ -124,14 +109,14 @@ class WebEidProvider implements IProvider, IProvidesIcons, IActivatableByAdmin, 
      */
     public function verifyChallenge(IUser $user, $challenge): bool
     {
-        $challengeNonce = $this->nonceStore->getAndRemove();
+        $challengeNonce = $this->webEidService->getSessionBasedChallengeNonceStore()->getAndRemove();
         if (is_null($challengeNonce)) {
             // TODO: handle it
             return false;
         }
 
         try {
-            $cert = $this->validator->validate(
+            $cert = $this->webEidService->getValidator()->validate(
                 new WebEidAuthToken($challenge),
                 $challengeNonce->getBase64EncodedNonce()
             );
