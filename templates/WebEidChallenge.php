@@ -4,9 +4,9 @@ script('twofactor_webeid', 'web-eid');
 script('twofactor_webeid', 'web-eid-challenge');
 ?>
 
-<img class="two-factor-icon" src="<?php print_unescaped(image_path('twofactor_webeid', 'app.svg')); ?>" alt="">
+<img class="two-factor-icon" src="<?php print_unescaped(image_path('twofactor_webeid', 'webeid-card.svg')); ?>">
 
-<p><?php p('Custom Web-eID solution must be installed on your machine!') ?></p>
+<!-- <p><?php p('Custom Web-eID solution must be installed on your machine!') ?></p> -->
 <p><?php p('Please insert your smartcard and click on button below.') ?></p>
 
 <form id="webeid-form" method="POST" class="webeid-form">
