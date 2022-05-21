@@ -40,15 +40,10 @@ class WebEidService
     /** @var ISession */
     private $session;
 
-    /** @var LoggerInterface */
-    private $logger;
-
     public function __construct(
-        ISession $session,
-        LoggerInterface $logger
+        ISession $session
     ) {
         $this->session = $session;
-        $this->logger = $logger;
     }
 
     public function getSessionBasedChallengeNonceStore(): ChallengeNonceStore
@@ -67,7 +62,7 @@ class WebEidService
 
     public function loadTrustedCACertificatesFromCertFiles(): array
     {
-        // TODO: put cert path into config
+        // TODO: put cert path into some config
         $pathnames = array_map(
             'basename',
             glob(__DIR__.'/../../trustedcerts/*.{crt,cer,pem,der}', GLOB_BRACE)
@@ -78,7 +73,7 @@ class WebEidService
 
     public function getValidator(): AuthTokenValidator
     {
-        // TODO: put site-origin into config?
+        // TODO: put site-origin into some config?
         return (new AuthTokenValidatorBuilder())
             ->withSiteOrigin(new Uri('https://'.$_SERVER['SERVER_ADDR']))
             ->withTrustedCertificateAuthorities(...self::loadTrustedCACertificatesFromCertFiles())

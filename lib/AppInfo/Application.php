@@ -22,15 +22,11 @@ declare(strict_types=1);
 
 namespace OCA\TwoFactorWebEid\AppInfo;
 
-use OCA\TwoFactorWebEid\Provider\WebEidProvider;
-use OCA\TwoFactorWebEid\Service\WebEidService;
+use muzosh\web_eid_authtoken_validation_php\ocsp\ASN1Util;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
-use OCP\IURLGenerator;
-use Psr\Container\ContainerInterface;
-use Psr\Log\LoggerInterface;
 
 class Application extends App implements IBootstrap
 {
@@ -44,13 +40,7 @@ class Application extends App implements IBootstrap
     public function register(IRegistrationContext $context): void
     {
         require_once __DIR__.'/../../vendor/autoload.php';
-        // $context->registerService(WebEidProvider::class, function (ContainerInterface $c): WebEidProvider {
-        //     return new WebEidProvider(
-        //         $c->get(LoggerInterface::class),
-        //         $c->get(IURLGenerator::class),
-        //         $c->get(WebEidService::class)
-        //     );
-        // });
+        ASN1Util::loadOIDs();
     }
 
     public function boot(IBootContext $context): void
