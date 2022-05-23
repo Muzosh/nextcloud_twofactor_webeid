@@ -2,7 +2,7 @@
 
 // /**
 //  *
-//  * @copyright Copyright (c) 2021, Petr Muzikant (petr.muzikant@vut.cz)
+//  * @copyright Copyright (c) 2022, Petr Muzikant (petr.muzikant@vut.cz)
 //  *
 //  * @license GNU AGPL version 3 or any later version
 //  *
