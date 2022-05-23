@@ -23,6 +23,7 @@ declare(strict_types=1);
 namespace OCA\TwoFactorWebEid\Service;
 
 use GuzzleHttp\Psr7\Uri;
+use muzosh\web_eid_authtoken_validation_php\certificate\CertificateData;
 use muzosh\web_eid_authtoken_validation_php\certificate\CertificateLoader;
 use muzosh\web_eid_authtoken_validation_php\challenge\ChallengeNonceGenerator;
 use muzosh\web_eid_authtoken_validation_php\challenge\ChallengeNonceGeneratorBuilder;
@@ -31,54 +32,66 @@ use muzosh\web_eid_authtoken_validation_php\validator\AuthTokenValidator;
 use muzosh\web_eid_authtoken_validation_php\validator\AuthTokenValidatorBuilder;
 use OCP\ISession;
 use OCP\IUser;
-use Psr\Log\LoggerInterface;
+use phpseclib3\File\X509;
 
-class WebEidService
-{
-    private const CHALLENGE_NONCE_TTL_SECONDS = 300;
+class WebEidService {
+	private const CHALLENGE_NONCE_TTL_SECONDS = 300;
 
-    /** @var ISession */
-    private $session;
+	/** @var ISession */
+	private $session;
 
-    public function __construct(
-        ISession $session
-    ) {
-        $this->session = $session;
-    }
+	public function __construct(
+		ISession $session
+	) {
+		$this->session = $session;
+	}
 
-    public function getSessionBasedChallengeNonceStore(): ChallengeNonceStore
-    {
-        return new SessionBackedChallengeNonceStore($this->session);
-    }
+	public function authenticate(X509 $cert, IUser $user): bool {
+		$certCN = CertificateData::getSubjectCN($cert);
 
-    public function getGenerator(ChallengeNonceStore $challengeNonceStore): ChallengeNonceGenerator
-    {
-        return (new ChallengeNonceGeneratorBuilder())
-            ->withNonceTtl(self::CHALLENGE_NONCE_TTL_SECONDS)
-            ->withChallengeNonceStore($challengeNonceStore)
-            ->build()
-        ;
-    }
+		if ($user->getUID() == $certCN) {
+			return true;
+		}
 
-    public function loadTrustedCACertificatesFromCertFiles(): array
-    {
-        // TODO: put cert path into some config
-        $pathnames = array_map(
-            'basename',
-            glob(__DIR__.'/../../trustedcerts/*.{crt,cer,pem,der}', GLOB_BRACE)
-        );
+		$this->logger->error(
+			'WebEid authtoken validation successful, but CommonName does not match. UserID: '.
+			$user->getUID().
+			', CN: '.
+			$certCN
+		);
 
-        return CertificateLoader::loadCertificatesFromPath(__DIR__.'/../../trustedcerts', ...$pathnames);
-    }
+        return false;
+	}
 
-    public function getValidator(): AuthTokenValidator
-    {
-        // TODO: put site-origin into some config?
-        return (new AuthTokenValidatorBuilder())
-            ->withSiteOrigin(new Uri('https://'.$_SERVER['SERVER_ADDR']))
-            ->withTrustedCertificateAuthorities(...self::loadTrustedCACertificatesFromCertFiles())
-            ->withoutUserCertificateRevocationCheckWithOcsp()
-            ->build()
-        ;
-    }
+	public function getSessionBasedChallengeNonceStore(): ChallengeNonceStore {
+		return new SessionBackedChallengeNonceStore($this->session);
+	}
+
+	public function getGenerator(ChallengeNonceStore $challengeNonceStore): ChallengeNonceGenerator {
+		return (new ChallengeNonceGeneratorBuilder())
+			->withNonceTtl(self::CHALLENGE_NONCE_TTL_SECONDS)
+			->withChallengeNonceStore($challengeNonceStore)
+			->build()
+		;
+	}
+
+	public function loadTrustedCACertificatesFromCertFiles(): array {
+		// TODO: put cert path into some config
+		$pathnames = array_map(
+			'basename',
+			glob(__DIR__.'/../../trustedcerts/*.{crt,cer,pem,der}', GLOB_BRACE)
+		);
+
+		return CertificateLoader::loadCertificatesFromPath(__DIR__.'/../../trustedcerts', ...$pathnames);
+	}
+
+	public function getValidator(): AuthTokenValidator {
+		// TODO: put site-origin into some config?
+		return (new AuthTokenValidatorBuilder())
+			->withSiteOrigin(new Uri('https://'.$_SERVER['SERVER_ADDR']))
+			->withTrustedCertificateAuthorities(...self::loadTrustedCACertificatesFromCertFiles())
+			->withoutUserCertificateRevocationCheckWithOcsp()
+			->build()
+		;
+	}
 }

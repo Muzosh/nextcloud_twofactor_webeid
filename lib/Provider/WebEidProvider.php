@@ -23,7 +23,6 @@ declare(strict_types=1);
 namespace OCA\TwoFactorWebEid\Provider;
 
 use muzosh\web_eid_authtoken_validation_php\authtoken\WebEidAuthToken;
-use muzosh\web_eid_authtoken_validation_php\certificate\CertificateData;
 use muzosh\web_eid_authtoken_validation_php\exceptions\AuthTokenException;
 use muzosh\web_eid_authtoken_validation_php\exceptions\ChallengeNonceExpiredException;
 use muzosh\web_eid_authtoken_validation_php\exceptions\ChallengeNonceNotFoundException;
@@ -39,123 +38,112 @@ use OCP\IUser;
 use OCP\Template;
 use Psr\Log\LoggerInterface;
 
-class WebEidProvider implements IProvider, IProvidesIcons, IActivatableByAdmin, IDeactivatableByAdmin
-{
-    /** @var LoggerInterface */
-    private $logger;
+class WebEidProvider implements IProvider, IProvidesIcons, IActivatableByAdmin, IDeactivatableByAdmin {
+	/** @var LoggerInterface */
+	private $logger;
 
-    /** @var IURLGenerator */
-    private $urlGenerator;
+	/** @var IURLGenerator */
+	private $urlGenerator;
 
-    /** @var WebEidService */
-    private $webEidService;
+	/** @var WebEidService */
+	private $webEidService;
 
-    /** @var IRegistry */
-    private $registry;
+	/** @var IRegistry */
+	private $registry;
 
-    public function __construct(
-        LoggerInterface $logger,
-        IURLGenerator $urlGenerator,
-        WebEidService $webEidService,
-        IRegistry $registry
-    ) {
-        $this->logger = $logger;
-        $this->urlGenerator = $urlGenerator;
-        $this->webEidService = $webEidService;
-        $this->registry = $registry;
-    }
+	public function __construct(
+		LoggerInterface $logger,
+		IURLGenerator $urlGenerator,
+		WebEidService $webEidService,
+		IRegistry $registry
+	) {
+		$this->logger = $logger;
+		$this->urlGenerator = $urlGenerator;
+		$this->webEidService = $webEidService;
+		$this->registry = $registry;
+	}
 
-    public function enableFor(IUser $user)
-    {
-        $this->registry->enableProviderFor($this, $user);
-    }
+	public function enableFor(IUser $user) {
+		$this->registry->enableProviderFor($this, $user);
+	}
 
-    public function disableFor(IUser $user)
-    {
-        $this->registry->enableProviderFor($this, $user);
-    }
+	public function disableFor(IUser $user) {
+		$this->registry->enableProviderFor($this, $user);
+	}
 
-    /**
-     * Get unique identifier of this 2FA provider.
-     */
-    public function getId(): string
-    {
-        return Application::APP_NAME;
-    }
+	/**
+	 * Get unique identifier of this 2FA provider.
+	 */
+	public function getId(): string {
+		return Application::APP_NAME;
+	}
 
-    /**
-     * Get the display name for selecting the 2FA provider.
-     */
-    public function getDisplayName(): string
-    {
-        return 'Web-eID 2FA';
-    }
+	/**
+	 * Get the display name for selecting the 2FA provider.
+	 */
+	public function getDisplayName(): string {
+		return 'Web-eID 2FA';
+	}
 
-    /**
-     * Get the description for selecting the 2FA provider.
-     */
-    public function getDescription(): string
-    {
-        return 'This provider enables second authentication factor using Web-eID.';
-    }
+	/**
+	 * Get the description for selecting the 2FA provider.
+	 */
+	public function getDescription(): string {
+		return 'This provider enables second authentication factor using Web-eID.';
+	}
 
-    /**
-     * Get the template for rending the 2FA provider view.
-     */
-    public function getTemplate(IUser $user): Template
-    {
-        $generator = $this->webEidService->getGenerator(
-            $this->webEidService->getSessionBasedChallengeNonceStore()
-        );
-        $challengeNonce = $generator->generateAndStoreNonce();
+	/**
+	 * Get the template for rending the 2FA provider view.
+	 */
+	public function getTemplate(IUser $user): Template {
+		$generator = $this->webEidService->getGenerator(
+			$this->webEidService->getSessionBasedChallengeNonceStore()
+		);
+		$challengeNonce = $generator->generateAndStoreNonce();
 
-        $template = new Template(Application::APP_NAME, 'WebEidChallenge');
-        $template->append('nonce', $challengeNonce->getBase64EncodedNonce());
+		$template = new Template(Application::APP_NAME, 'WebEidChallenge');
+		$template->append('nonce', $challengeNonce->getBase64EncodedNonce());
 
-        return $template;
-    }
+		return $template;
+	}
 
-    /**
-     * Verify the given challenge.
-     *
-     * @param string $challenge
-     */
-    public function verifyChallenge(IUser $user, $challenge): bool
-    {
-        try {
-            $challengeNonce = $this->webEidService->getSessionBasedChallengeNonceStore()->getAndRemove();
-        } catch (ChallengeNonceNotFoundException $e) {
-            $this->logger->error('WebEid challenge not found: '.$e->getMessage(), $e->getTrace());
-        } catch (ChallengeNonceExpiredException $e) {
-            $this->logger->error('WebEid challenge nonce expired: '.$e->getMessage(), $e->getTrace());
-        }
+	/**
+	 * Verify the given challenge.
+	 *
+	 * @param string $challenge
+	 */
+	public function verifyChallenge(IUser $user, $challenge): bool {
+		try {
+			$challengeNonce = $this->webEidService->getSessionBasedChallengeNonceStore()->getAndRemove();
+		} catch (ChallengeNonceNotFoundException $e) {
+			$this->logger->error('WebEid challenge not found: '.$e->getMessage(), $e->getTrace());
+		} catch (ChallengeNonceExpiredException $e) {
+			$this->logger->error('WebEid challenge nonce expired: '.$e->getMessage(), $e->getTrace());
+		}
 
-        try {
-            $cert = $this->webEidService->getValidator()->validate(
-                new WebEidAuthToken($challenge),
-                $challengeNonce->getBase64EncodedNonce()
-            );
+		try {
+			$cert = $this->webEidService->getValidator()->validate(
+				new WebEidAuthToken($challenge),
+				$challengeNonce->getBase64EncodedNonce()
+			);
 
-            return $user->getUID() == CertificateData::getSubjectCN($cert);
-        } catch (AuthTokenException $e) {
-            $this->logger->error('WebEid authentication token validation unsuccessful: '.$e->getMessage(), $e->getTrace());
+			return $this->webEidService->authenticate($cert, $user);
+		} catch (AuthTokenException $e) {
+			$this->logger->error('WebEid authtoken validation unsuccessful: '.$e->getMessage(), $e->getTrace());
+		}
 
-            return false;
-        }
-    }
+		return false;
+	}
 
-    public function isTwoFactorAuthEnabledForUser(IUser $user): bool
-    {
-        return boolval($this->registry->getProviderStates($user)[Application::APP_NAME]);
-    }
+	public function isTwoFactorAuthEnabledForUser(IUser $user): bool {
+		return boolval($this->registry->getProviderStates($user)[Application::APP_NAME]);
+	}
 
-    public function getLightIcon(): string
-    {
-        return $this->urlGenerator->imagePath(Application::APP_NAME, 'webeid-light.svg');
-    }
+	public function getLightIcon(): string {
+		return $this->urlGenerator->imagePath(Application::APP_NAME, 'webeid-light.svg');
+	}
 
-    public function getDarkIcon(): string
-    {
-        return $this->urlGenerator->imagePath(Application::APP_NAME, 'webeid-dark.svg');
-    }
+	public function getDarkIcon(): string {
+		return $this->urlGenerator->imagePath(Application::APP_NAME, 'webeid-dark.svg');
+	}
 }

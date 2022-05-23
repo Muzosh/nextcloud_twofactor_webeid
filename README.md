@@ -1,7 +1,18 @@
-# README is in TODO (ETA: summer 2022)
+# twofactor_webeid
 
+This installable [Nextcloud App](https://docs.nextcloud.com/server/latest/admin_manual/apps_management.html#apps-management) provides 2-factor authentication for [Web-eID](https://web-eid.eu/) solution.
 
-## (DONT DO THE FOLLOWING - building the app is used for Nextcloud App Store publishing)
+> Currently it is supposed to run with custom [JavaCard applet](https://github.com/Muzosh/web-eid-javacard-applet), but with easy implementation of authenticate function it also works with other Web-eID compatible cards.
+
+## Usage
+
+1. clone this repository into `<nextcloud-path>/apps` directory
+2. check function `lib/Service/WebEidService.php:authenticate()` and implement other authentication mechanism if needed
+3. use [OCC](https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/occ_command.html?highlight=occ#using-the-occ-command) command to enable this app for specific user:
+   * `occ twofactorauth:enable <userID> twofactor_webeid`
+
+> (INGORE REST OF README - building the app is used for Nextcloud App Store publishing)
+
 ## Building the app
 
 The app can be built by using the provided Makefile by running:
@@ -9,6 +20,7 @@ The app can be built by using the provided Makefile by running:
     make
 
 This requires the following things to be present:
+
 * make
 * which
 * tar: for building the archive
@@ -18,6 +30,7 @@ This requires the following things to be present:
 The make command will install or update Composer dependencies if a composer.json is present and also **npm run build** if a package.json is present in the **js/** folder. The npm **build** script should use local paths for build systems and package managers, so people that simply want to build the app won't need to install npm libraries globally, e.g.:
 
 **package.json**:
+
 ```json
 "scripts": {
     "test": "node node_modules/gulp-cli/bin/gulp.js karma",
@@ -25,7 +38,6 @@ The make command will install or update Composer dependencies if a composer.json
     "build": "node node_modules/gulp-cli/bin/gulp.js"
 }
 ```
-
 
 ## Publish to App Store
 
@@ -36,6 +48,7 @@ First get an account for the [App Store](http://apps.nextcloud.com/) then run:
 The archive is located in build/artifacts/appstore and can then be uploaded to the App Store.
 
 ## Running tests
+
 You can use the provided Makefile to run all tests by using:
 
     make test

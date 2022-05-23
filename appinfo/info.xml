@@ -4,7 +4,7 @@
 	<name>Web-eID smart-card 2FA</name>
 	<summary>Web-eID two-factor authentication</summary>
 	<description>temp description</description>
-	<version>0.0.1</version>
+	<version>0.1.0</version>
 	<licence>agpl</licence>
 	<author mail="petr.muzikant@vut.cz">Petr Muzikant</author>
 	<namespace>TwoFactorWebEid</namespace>
