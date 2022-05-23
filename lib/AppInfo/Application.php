@@ -2,7 +2,7 @@
 
 /**
  *
- * @copyright Copyright (c) 2021, Petr Muzikant (petr.muzikant@vut.cz)
+ * @copyright Copyright (c) 2022, Petr Muzikant (petr.muzikant@vut.cz)
  *
  * @license GNU AGPL version 3 or any later version
  *
@@ -23,16 +23,26 @@
 
 declare(strict_types=1);
 
-namespace OCA\TwoFactorSmartCard\AppInfo;
+namespace OCA\TwoFactorWebEid\AppInfo;
 
+use muzosh\web_eid_authtoken_validation_php\ocsp\ASN1Util;
 use OCP\AppFramework\App;
+use OCP\AppFramework\Bootstrap\IBootContext;
+use OCP\AppFramework\Bootstrap\IBootstrap;
+use OCP\AppFramework\Bootstrap\IRegistrationContext;
 
-class Application extends App
-{
-	public const APP_NAME = 'twofactor_smartcard';
+class Application extends App implements IBootstrap {
+	public const APP_NAME = 'twofactor_webeid';
 
-	public function __construct(array $urlParams = [])
-	{
+	public function __construct(array $urlParams = array()) {
 		parent::__construct(self::APP_NAME, $urlParams);
+	}
+
+	public function register(IRegistrationContext $context): void {
+		require_once __DIR__.'/../../vendor/autoload.php';
+		ASN1Util::loadOIDs();
+	}
+
+	public function boot(IBootContext $context): void {
 	}
 }
