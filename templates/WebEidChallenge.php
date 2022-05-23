@@ -11,7 +11,11 @@ script('twofactor_webeid', 'web-eid-challenge');
 
 <form id="webeid-form" method="POST" class="webeid-form">
 	<input id="webeid-nonce" type="text" hidden="true" value="<?php p($_['nonce'][0]) ?>" readonly="readonly">
-	<input id="webeid-token" type="text" name="challenge" hidden="true" value="">
+	<input id="webeid-token" type="text" name="challenge" hidden="true" value="" readonly="readonly">
+	<div id="webeid-loading" style="margin-bottom:20px; display:none">
+		<span class="icon-loading-dark webeid-loading-spinner"></span>
+	</div>
+	<span id="webeid-error"></span>
 	<button id="webeid-authenticate" class="primary two-factor-submit" type="button">
 		<?php p('Authenticate'); ?>
 	</button>

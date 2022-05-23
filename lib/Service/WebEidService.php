@@ -33,17 +33,23 @@ use muzosh\web_eid_authtoken_validation_php\validator\AuthTokenValidatorBuilder;
 use OCP\ISession;
 use OCP\IUser;
 use phpseclib3\File\X509;
+use Psr\Log\LoggerInterface;
 
 class WebEidService {
 	private const CHALLENGE_NONCE_TTL_SECONDS = 300;
 
 	/** @var ISession */
 	private $session;
+	
+	/** @var LoggerInterface */
+	private $logger;
 
 	public function __construct(
+		LoggerInterface $logger,
 		ISession $session
 	) {
 		$this->session = $session;
+		$this->logger = $logger;
 	}
 
 	public function authenticate(X509 $cert, IUser $user): bool {
@@ -60,7 +66,7 @@ class WebEidService {
 			$certCN
 		);
 
-        return false;
+		return false;
 	}
 
 	public function getSessionBasedChallengeNonceStore(): ChallengeNonceStore {

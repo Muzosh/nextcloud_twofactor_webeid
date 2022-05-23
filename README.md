@@ -6,13 +6,15 @@ This installable [Nextcloud App](https://docs.nextcloud.com/server/latest/admin_
 
 ## Usage
 
-1. clone this repository into `<nextcloud-path>/apps` directory
-2. check function `lib/Service/WebEidService.php:authenticate()` and implement other authentication mechanism if needed
-3. use [OCC](https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/occ_command.html?highlight=occ#using-the-occ-command) command to enable this app for specific user:
+1. Clone this repository into `<nextcloud-path>/apps` directory
+2. Install [authtoken validation library](https://github.com/Muzosh/web-eid-authtoken-validation-php) by `composer install` (check `composer.json` for require details)
+3. Check function `lib/Service/WebEidService.php:authenticate()` and implement other authentication mechanism if needed
+4. Use [OCC](https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/occ_command.html?highlight=occ#using-the-occ-command) command to enable this app for specific user:
    * `occ twofactorauth:enable <userID> twofactor_webeid`
+5. After specified `<userID>` logins with username+password, he is asked to insert card into reader and click on Authenticate button
+6. Web-eID authenticaton process is executed
 
-> (INGORE REST OF README - building the app is used for Nextcloud App Store publishing)
-
+<!-- # (INGORE REST OF README - building the app is used for Nextcloud App Store publishing)
 ## Building the app
 
 The app can be built by using the provided Makefile by running:
@@ -63,4 +65,4 @@ or:
 
     phpunit -c phpunit.integration.xml
 
-for integration tests
+for integration tests -->
