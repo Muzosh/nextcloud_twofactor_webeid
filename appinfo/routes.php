@@ -23,8 +23,7 @@
 
 return [
 	'routes' => [
-		['name' => 'settings#deletePassword', 'url' => '/settings/deletePassword', 'verb' => 'DELETE'],
-		['name' => 'settings#getStatus', 'url' => '/settings/getStatus', 'verb' => 'GET'],
-		['name' => 'settings#setPassword', 'url' => '/settings/setPassword', 'verb' => 'POST'],
+		// apparently controller methods cannot be called during 2FA: see https://help.nextcloud.com/t/expose-controller-method-for-2fa-application-to-obtain-challenge-nonce-csfr-check-failed-but-no-error-was-generated-in-log-files/138270
+		// ['name' => 'challenge#get_challenge', 'url' => '/auth/challenge', 'verb' => 'GET'],  
 	]
 ];

@@ -2,7 +2,7 @@
 
 /**
  *
- * @copyright Copyright (c) 2021, Petr Muzikant (petr.muzikant@vut.cz)
+ * @copyright Copyright (c) 2022, Petr Muzikant (petr.muzikant@vut.cz)
  *
  * @license GNU AGPL version 3 or any later version
  *
@@ -23,16 +23,14 @@
 
 declare(strict_types=1);
 
-namespace OCA\TwoFactorSmartCard\Settings;
+namespace OCA\TwoFactorWebEid\Settings;
 
-use OCA\TwoFactorSmartCard\AppInfo\Application;
+use OCA\TwoFactorWebEid\AppInfo\Application;
 use OCP\Authentication\TwoFactorAuth\IPersonalProviderSettings;
 use OCP\Template;
 
-class PersonalSettings implements IPersonalProviderSettings
-{
-	public function getBody(): Template
-	{
+class PersonalSettings implements IPersonalProviderSettings {
+	public function getBody(): Template {
 		return new Template(Application::APP_NAME, 'personal');
 	}
 }
