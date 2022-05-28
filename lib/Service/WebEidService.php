@@ -39,20 +39,23 @@ use phpseclib3\File\X509;
 use Psr\Log\LoggerInterface;
 
 class WebEidService {
-	private const CHALLENGE_NONCE_TTL_SECONDS = 300;
-
 	/** @var ISession */
 	private $session;
 	
 	/** @var LoggerInterface */
 	private $logger;
 
+	/** @var WebEidConfig */
+	private $config;
+
 	public function __construct(
 		LoggerInterface $logger,
-		ISession $session
+		ISession $session,
+		WebEidConfig $config
 	) {
 		$this->session = $session;
 		$this->logger = $logger;
+		$this->config = $config;
 	}
 
 	public function authenticate(X509 $cert, IUser $user): bool {
@@ -78,26 +81,27 @@ class WebEidService {
 
 	public function getGenerator(ChallengeNonceStore $challengeNonceStore): ChallengeNonceGenerator {
 		return (new ChallengeNonceGeneratorBuilder())
-			->withNonceTtl(self::CHALLENGE_NONCE_TTL_SECONDS)
+			->withNonceTtl($this->config['CHALLENGE_NONCE_TTL_SECONDS'])
 			->withChallengeNonceStore($challengeNonceStore)
 			->build()
 		;
 	}
 
 	public function loadTrustedCACertificatesFromCertFiles(): array {
-		// TODO: put cert path into some config
 		$pathnames = array_map(
 			'basename',
-			glob(__DIR__.'/../../trustedcerts/*.{crt,cer,pem,der}', GLOB_BRACE)
+			glob(
+				$this->config['TRUSTED_CERT_PATH'].'/*.{crt,cer,pem,der}',
+				GLOB_BRACE
+			)
 		);
 
-		return CertificateLoader::loadCertificatesFromPath(__DIR__.'/../../trustedcerts', ...$pathnames);
+		return CertificateLoader::loadCertificatesFromPath($this->config['TRUSTED_CERT_PATH'], ...$pathnames);
 	}
 
 	public function getValidator(): AuthTokenValidator {
-		// TODO: put site-origin into some config?
 		return (new AuthTokenValidatorBuilder())
-			->withSiteOrigin(new Uri('https://'.$_SERVER['SERVER_ADDR']))
+			->withSiteOrigin(new Uri($this->config['ORIGIN']))
 			->withTrustedCertificateAuthorities(...self::loadTrustedCACertificatesFromCertFiles())
 			->withoutUserCertificateRevocationCheckWithOcsp()
 			->build()
