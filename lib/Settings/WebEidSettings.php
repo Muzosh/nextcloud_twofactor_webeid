@@ -21,16 +21,17 @@
  *
  */
 
-declare(strict_types=1);
+// declare(strict_types=1);
 
-namespace OCA\TwoFactorWebEid\Settings;
+// namespace OCA\TwoFactorWebEid\Settings;
 
-use OCA\TwoFactorWebEid\AppInfo\Application;
-use OCP\Authentication\TwoFactorAuth\IPersonalProviderSettings;
-use OCP\Template;
+// use OCA\TwoFactorWebEid\AppInfo\Application;
+// use OCP\Authentication\TwoFactorAuth\IPersonalProviderSettings;
+// use OCP\Template;
 
-class PersonalSettings implements IPersonalProviderSettings {
-	public function getBody(): Template {
-		return new Template(Application::APP_NAME, 'personal');
-	}
-}
+// class PersonalSettings implements IPersonalProviderSettings {
+// 	public function getBody(): Template {
+// 		return new Template(Application::APP_NAME, 'WebEidPersonalSettings');
+// 	}
+// }
+// Settings is not needed at the moment
