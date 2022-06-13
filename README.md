@@ -14,6 +14,17 @@ This installable [Nextcloud App](https://docs.nextcloud.com/server/latest/admin_
 5. After specified `<userID>` logins with username+password, he is asked to insert card into reader and click on Authenticate button
 6. Web-eID authenticaton process is executed
 
+## Web-eID validation PHP library details
+
+The following list describes all relevant code that need to be implemented in order to authenticate via Web-eID using [PHP validation library](https://github.com/Muzosh/web-eid-authtoken-validation-php) installed by Composer:
+
+* `js/web-eid-challenge.js` - adds handler on button click which calls relevant methods from `web-eid.js` (see [official documentation](https://github.com/web-eid/web-eid.js) for more details)
+* `lib/Provider/WebEidProvider.php:getTemplate() and verifyChallenge()` - high level functions for obtaining challenge and verifying authtoken
+* `lib/Service/WebEidConfig.php` - few configuration values required by Web-eID library
+* `lib/Service/WebEidService.php` - low level functions for providing Web-eID objects
+* `lib/Service/SessionBackedChallengeNonceStore.php` - example implementation of challenge nonce store using built-in Nextcloud session object
+* `templates/WebEidChallenge.php` - prepared html page containing a form with `challenge` input, which is sent to `verifyChallenge()` function by Nextcloud
+
 <!-- # (INGORE REST OF README - building the app is used for Nextcloud App Store publishing)
 ## Building the app
 
