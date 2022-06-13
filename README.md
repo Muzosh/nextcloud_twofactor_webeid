@@ -2,7 +2,7 @@
 
 This installable [Nextcloud App](https://docs.nextcloud.com/server/latest/admin_manual/apps_management.html#apps-management) provides 2-factor authentication for [Web-eID](https://web-eid.eu/) solution.
 
-> Currently it is supposed to run with custom [JavaCard applet](https://github.com/Muzosh/web-eid-javacard-applet), but with easy implementation of authenticate function it also works with other Web-eID compatible cards.
+> Currently it is supposed to run with [InfinitEID](https://github.com/Muzosh/InfinitEID) solution, but with easy implementation of authenticate function it also works with other Web-eID compatible cards.
 
 ## Usage
 
