@@ -34,4 +34,4 @@
 // 		return new Template(Application::APP_NAME, 'WebEidPersonalSettings');
 // 	}
 // }
-// Settings is not needed at the moment
+// PersonalSettings is not needed at the moment
