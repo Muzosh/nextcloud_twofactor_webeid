@@ -119,12 +119,12 @@ class WebEidProvider implements IProvider, IProvidesIcons, IActivatableByAdmin, 
 		try {
 			$challengeNonce = $this->webEidService->getSessionBasedChallengeNonceStore()->getAndRemove();
 			try {
-				$cert = $this->webEidService->getValidator()->validate(
+				$userCertificate = $this->webEidService->getValidator()->validate(
 					new WebEidAuthToken($challenge),
 					$challengeNonce->getBase64EncodedNonce()
 				);
 
-				return $this->webEidService->authenticate($cert, $user);
+				return $this->webEidService->authenticate($userCertificate, $user);
 			} catch (AuthTokenException $e) {
 				$this->logger->error('WebEid authtoken validation unsuccessful: '.$e->getMessage(), $e->getTrace());
 			}
