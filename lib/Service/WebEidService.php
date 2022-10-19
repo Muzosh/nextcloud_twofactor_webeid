@@ -75,7 +75,7 @@ class WebEidService
 				$user->getUID(),
 				Application::APP_NAME,
 				Application::SUBJECT_CN_KEY_NAME
-			) == $certCN
+			) === $certCN
 		) {
 			return true;
 		}
