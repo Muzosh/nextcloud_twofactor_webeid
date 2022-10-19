@@ -31,7 +31,6 @@ class WebEidConfig implements ArrayAccess {
 	private array $configArray;
 
 	public function __construct() {
-
 		// ! CHANGE ME
 		$this->configArray = array(
 			'CHALLENGE_NONCE_TTL_SECONDS' => 300,

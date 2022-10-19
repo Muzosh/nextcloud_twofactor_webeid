@@ -33,65 +33,82 @@ use muzosh\web_eid_authtoken_validation_php\challenge\ChallengeNonceGeneratorBui
 use muzosh\web_eid_authtoken_validation_php\challenge\ChallengeNonceStore;
 use muzosh\web_eid_authtoken_validation_php\validator\AuthTokenValidator;
 use muzosh\web_eid_authtoken_validation_php\validator\AuthTokenValidatorBuilder;
+use OCA\TwoFactorWebEid\AppInfo\Application;
+use OCP\IConfig;
 use OCP\ISession;
 use OCP\IUser;
 use phpseclib3\File\X509;
 use Psr\Log\LoggerInterface;
 
-class WebEidService {
+class WebEidService
+{
 	/** @var ISession */
 	private $session;
-	
+
 	/** @var LoggerInterface */
 	private $logger;
 
 	/** @var WebEidConfig */
 	private $config;
 
+	/** @var IConfig */
+	private $userConfig;
+
 	public function __construct(
 		LoggerInterface $logger,
 		ISession $session,
-		WebEidConfig $config
+		WebEidConfig $config,
+		IConfig $userConfig
 	) {
 		$this->session = $session;
 		$this->logger = $logger;
 		$this->config = $config;
+		$this->userConfig = $userConfig;
 	}
 
-	public function authenticate(X509 $cert, IUser $user): bool {
-		$certCN = CertificateData::getSubjectCN($cert);
+	public function authenticate(X509 $userCertificate, IUser $user): bool
+	{
+		$certCN = CertificateData::getSubjectCN($userCertificate);
 
-		if ($user->getUID() == $certCN) {
+		if (
+			$this->userConfig->getUserValue(
+				$user->getUID(),
+				Application::APP_NAME,
+				Application::SUBJECT_CN_KEY_NAME
+			) == $certCN
+		) {
 			return true;
 		}
 
 		$this->logger->error(
-			'WebEid authtoken validation successful, but CommonName does not match. UserID: '.
-			$user->getUID().
-			', CN: '.
-			$certCN
+			'WebEid authtoken validation successful, but CommonName does not match. UserID: ' .
+				$user->getUID() .
+				', CN: ' .
+				$certCN
 		);
 
 		return false;
 	}
 
-	public function getSessionBasedChallengeNonceStore(): ChallengeNonceStore {
+	public function getSessionBasedChallengeNonceStore(): ChallengeNonceStore
+	{
 		return new SessionBackedChallengeNonceStore($this->session);
 	}
 
-	public function getGenerator(ChallengeNonceStore $challengeNonceStore): ChallengeNonceGenerator {
+	public function getGenerator(ChallengeNonceStore $challengeNonceStore): ChallengeNonceGenerator
+	{
 		return (new ChallengeNonceGeneratorBuilder())
 			->withNonceTtl($this->config['CHALLENGE_NONCE_TTL_SECONDS'])
 			->withChallengeNonceStore($challengeNonceStore)
-			->build()
-		;
+			->build();
 	}
 
-	public function loadTrustedCACertificatesFromCertFiles(): array {
+	public function loadTrustedCACertificatesFromCertFiles(): array
+	{
 		$pathnames = array_map(
 			'basename',
 			glob(
-				$this->config['TRUSTED_CERT_PATH'].'/*.{crt,cer,pem,der}',
+				$this->config['TRUSTED_CERT_PATH'] . '/*.{crt,cer,pem,der}',
 				GLOB_BRACE
 			)
 		);
@@ -99,12 +116,12 @@ class WebEidService {
 		return CertificateLoader::loadCertificatesFromPath($this->config['TRUSTED_CERT_PATH'], ...$pathnames);
 	}
 
-	public function getValidator(): AuthTokenValidator {
+	public function getValidator(): AuthTokenValidator
+	{
 		return (new AuthTokenValidatorBuilder())
 			->withSiteOrigin(new Uri($this->config['ORIGIN']))
 			->withTrustedCertificateAuthorities(...self::loadTrustedCACertificatesFromCertFiles())
 			->withoutUserCertificateRevocationCheckWithOcsp()
-			->build()
-		;
+			->build();
 	}
 }

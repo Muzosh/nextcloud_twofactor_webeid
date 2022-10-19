@@ -25,7 +25,7 @@ declare(strict_types=1);
 
 namespace OCA\TwoFactorWebEid\AppInfo;
 
-use muzosh\web_eid_authtoken_validation_php\ocsp\ASN1Util;
+use muzosh\web_eid_authtoken_validation_php\util\ASN1Util;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
@@ -33,6 +33,7 @@ use OCP\AppFramework\Bootstrap\IRegistrationContext;
 
 class Application extends App implements IBootstrap {
 	public const APP_NAME = 'twofactor_webeid';
+	public const SUBJECT_CN_KEY_NAME = 'subject_cn';
 
 	public function __construct(array $urlParams = array()) {
 		parent::__construct(self::APP_NAME, $urlParams);
