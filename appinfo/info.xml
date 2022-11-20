@@ -12,7 +12,7 @@
 	<website>https://github.com/Muzosh/twofactor_webeid</website>
 	<bugs>https://github.com/Muzosh/twofactor_webeid/issues</bugs>
 	<dependencies>
-		<nextcloud min-version="20" max-version="22" />
+		<nextcloud min-version="21" max-version="25" />
 	</dependencies>
 	<two-factor-providers>
 		<provider>OCA\TwoFactorWebEid\Provider\WebEidProvider</provider>
