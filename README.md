@@ -4,6 +4,15 @@ This installable [Nextcloud App](https://docs.nextcloud.com/server/latest/admin_
 
 > Currently it is supposed to run with [InfinitEID](https://github.com/Muzosh/InfinitEID) solution, but with easy implementation of authenticate function it also works with other Web-eID compatible cards.
 
+## Usage (after installation from [Nextcloud App Store](https://apps.nextcloud.com/apps/twofactor_webeid))
+1. Use [OCC](https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/occ_command.html?highlight=occ#using-the-occ-command) command to enable this app (to register it):
+   * `occ app:enable twofactor_webeid`
+1. Use [OCC](https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/occ_command.html?highlight=occ#using-the-occ-command) command to enable this app for specific user:
+   * `occ twofactorauth:enable <userID> twofactor_webeid`
+1. Use [OCC](https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/occ_command.html?highlight=occ#using-the-occ-command) command to specify a subject CN loaded on the on-card user certificate:
+   * `occ user:setting <userID> twofactor_webeid subject_cn "<user subject CN>"`
+1. (Optional) Add trusted certificates into `/trustedcerts`
+
 ## Usage (DEVELOPER)
 
 1. Clone this repository into `<nextcloud-path>/apps` directory
