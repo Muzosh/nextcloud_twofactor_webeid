@@ -26,8 +26,8 @@ declare(strict_types=1);
 namespace OCA\TwoFactorWebEid\Service;
 
 use DateTime;
-use muzosh\web_eid_authtoken_validation_php\challenge\ChallengeNonce;
-use muzosh\web_eid_authtoken_validation_php\challenge\ChallengeNonceStore;
+use web_eid\web_eid_authtoken_validation_php\challenge\ChallengeNonce;
+use web_eid\web_eid_authtoken_validation_php\challenge\ChallengeNonceStore;
 use OCP\ISession;
 
 class SessionBackedChallengeNonceStore extends ChallengeNonceStore {

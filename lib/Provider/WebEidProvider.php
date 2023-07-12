@@ -25,10 +25,10 @@ declare(strict_types=1);
 
 namespace OCA\TwoFactorWebEid\Provider;
 
-use muzosh\web_eid_authtoken_validation_php\authtoken\WebEidAuthToken;
-use muzosh\web_eid_authtoken_validation_php\exceptions\AuthTokenException;
-use muzosh\web_eid_authtoken_validation_php\exceptions\ChallengeNonceExpiredException;
-use muzosh\web_eid_authtoken_validation_php\exceptions\ChallengeNonceNotFoundException;
+use web_eid\web_eid_authtoken_validation_php\authtoken\WebEidAuthToken;
+use web_eid\web_eid_authtoken_validation_php\exceptions\AuthTokenException;
+use web_eid\web_eid_authtoken_validation_php\exceptions\ChallengeNonceExpiredException;
+use web_eid\web_eid_authtoken_validation_php\exceptions\ChallengeNonceNotFoundException;
 use OCA\TwoFactorWebEid\AppInfo\Application;
 use OCA\TwoFactorWebEid\Service\WebEidService;
 use OCP\Authentication\TwoFactorAuth\IActivatableByAdmin;
