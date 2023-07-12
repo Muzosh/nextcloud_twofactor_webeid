@@ -25,7 +25,6 @@ declare(strict_types=1);
 
 namespace OCA\TwoFactorWebEid\AppInfo;
 
-use web_eid\web_eid_authtoken_validation_php\util\ASN1Util;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
@@ -41,7 +40,6 @@ class Application extends App implements IBootstrap {
 
 	public function register(IRegistrationContext $context): void {
 		require_once __DIR__.'/../../vendor/autoload.php';
-		ASN1Util::loadOIDs();
 	}
 
 	public function boot(IBootContext $context): void {
