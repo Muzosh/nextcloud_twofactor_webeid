@@ -1,3 +1,7 @@
+# branch: feature-post-quantum-support
+Utilizes [`PQC-web-eid-authtoken-validation-php`](https://github.com/Muzosh/web-eid-authtoken-validation-php/tree/feature-post-quantum-support) in order to enable support for post-quantum authentication token verification.
+See https://github.com/Muzosh/Post-Quantum-Authentication-On-The-Web
+
 # twofactor_webeid
 
 This installable [Nextcloud App](https://docs.nextcloud.com/server/latest/admin_manual/apps_management.html#apps-management) provides 2-factor authentication for [Web-eID](https://web-eid.eu/) solution.
