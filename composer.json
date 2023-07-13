@@ -12,10 +12,16 @@
         {
             "type": "vcs",
             "url": "https://github.com/Muzosh/web-eid-authtoken-validation-php"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/Muzosh/phpseclib",
+            "canonical": false
         }
     ],
     "require": {
-        "web-eid/web-eid-authtoken-validation-php": "dev-feature-post-quantum-support"
+        "web-eid/web-eid-authtoken-validation-php": "dev-feature-post-quantum-support",
+        "phpseclib/phpseclib": "dev-feature-post-quantum-support as 3.0.14"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",

@@ -35,7 +35,7 @@ class WebEidConfig implements ArrayAccess {
 		$this->configArray = array(
 			'CHALLENGE_NONCE_TTL_SECONDS' => 300,
 			'TRUSTED_CERT_PATH' => __DIR__.'/../../trustedcerts',
-			'ORIGIN' => 'https://'.$_SERVER['SERVER_ADDR']
+			'ORIGIN' => 'https://localhost:8443'
 		);
 	}
 
