@@ -105,15 +105,12 @@ class WebEidService
 
 	public function loadTrustedCACertificatesFromCertFiles(): array
 	{
-		$pathnames = array_map(
-			'basename',
-			glob(
-				$this->config['TRUSTED_CERT_PATH'] . '/*.{crt,cer,pem,der}',
-				GLOB_BRACE
-			)
+		$pathnames = glob(
+			$this->config['TRUSTED_CERT_PATH'] . '/*.{crt,cer,pem,der}',
+			GLOB_BRACE
 		);
 
-		return CertificateLoader::loadCertificatesFromPath($this->config['TRUSTED_CERT_PATH'], ...$pathnames);
+		return CertificateLoader::loadCertificatesFromResources(...$pathnames);
 	}
 
 	public function getValidator(): AuthTokenValidator
