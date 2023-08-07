@@ -49,7 +49,7 @@ class SessionBackedChallengeNonceStore extends ChallengeNonceStore {
 	/**
 	 * @UseSession
 	 */
-	protected function getAndRemoveImpl(): ?ChallengeNonce {
+	public function getAndRemove(): ?ChallengeNonce {
 		if (!$this->session[self::CHALLENGE_NONCE_KEY]) {
 			return null;
 		}
