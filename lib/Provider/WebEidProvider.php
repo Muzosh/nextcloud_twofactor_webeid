@@ -41,7 +41,8 @@ use OCP\IUser;
 use OCP\Template;
 use Psr\Log\LoggerInterface;
 
-class WebEidProvider implements IProvider, IProvidesIcons, IActivatableByAdmin, IDeactivatableByAdmin {
+class WebEidProvider implements IProvider, IProvidesIcons, IActivatableByAdmin, IDeactivatableByAdmin
+{
 	/** @var LoggerInterface */
 	private $logger;
 
@@ -66,39 +67,45 @@ class WebEidProvider implements IProvider, IProvidesIcons, IActivatableByAdmin, 
 		$this->registry = $registry;
 	}
 
-	public function enableFor(IUser $user) {
+	public function enableFor(IUser $user)
+	{
 		$this->registry->enableProviderFor($this, $user);
 	}
 
-	public function disableFor(IUser $user) {
+	public function disableFor(IUser $user)
+	{
 		$this->registry->enableProviderFor($this, $user);
 	}
 
 	/**
 	 * Get unique identifier of this 2FA provider.
 	 */
-	public function getId(): string {
+	public function getId(): string
+	{
 		return Application::APP_NAME;
 	}
 
 	/**
 	 * Get the display name for selecting the 2FA provider.
 	 */
-	public function getDisplayName(): string {
+	public function getDisplayName(): string
+	{
 		return 'Web-eID 2FA';
 	}
 
 	/**
 	 * Get the description for selecting the 2FA provider.
 	 */
-	public function getDescription(): string {
+	public function getDescription(): string
+	{
 		return 'This provider enables second authentication factor using Web-eID.';
 	}
 
 	/**
 	 * Get the template for rending the 2FA provider view.
 	 */
-	public function getTemplate(IUser $user): Template {
+	public function getTemplate(IUser $user): Template
+	{
 		$generator = $this->webEidService->getGenerator(
 			$this->webEidService->getSessionBasedChallengeNonceStore()
 		);
@@ -115,7 +122,8 @@ class WebEidProvider implements IProvider, IProvidesIcons, IActivatableByAdmin, 
 	 *
 	 * @param string $challenge
 	 */
-	public function verifyChallenge(IUser $user, $challenge): bool {
+	public function verifyChallenge(IUser $user, $challenge): bool
+	{
 		try {
 			$challengeNonce = $this->webEidService->getSessionBasedChallengeNonceStore()->getAndRemove();
 			try {
@@ -126,26 +134,33 @@ class WebEidProvider implements IProvider, IProvidesIcons, IActivatableByAdmin, 
 
 				return $this->webEidService->authenticate($userCertificate, $user);
 			} catch (AuthTokenException $e) {
-				$this->logger->error('WebEid authtoken validation unsuccessful: '.$e->getMessage(), $e->getTrace());
+				$this->logger->error('WebEid authtoken validation unsuccessful: ' . $e->getMessage(), $e->getTrace());
 			}
 		} catch (ChallengeNonceNotFoundException $e) {
-			$this->logger->error('WebEid challenge not found: '.$e->getMessage(), $e->getTrace());
+			$this->logger->error('WebEid challenge not found: ' . $e->getMessage(), $e->getTrace());
 		} catch (ChallengeNonceExpiredException $e) {
-			$this->logger->error('WebEid challenge nonce expired: '.$e->getMessage(), $e->getTrace());
+			$this->logger->error('WebEid challenge nonce expired: ' . $e->getMessage(), $e->getTrace());
 		}
 
 		return false;
 	}
 
-	public function isTwoFactorAuthEnabledForUser(IUser $user): bool {
-		return boolval($this->registry->getProviderStates($user)[Application::APP_NAME]);
+	public function isTwoFactorAuthEnabledForUser(IUser $user): bool
+	{
+		$providerStates = $this->registry->getProviderStates($user);
+
+		return array_key_exists(Application::APP_NAME, $providerStates)
+			? boolval($providerStates[Application::APP_NAME])
+			: false;
 	}
 
-	public function getLightIcon(): string {
+	public function getLightIcon(): string
+	{
 		return $this->urlGenerator->imagePath(Application::APP_NAME, 'webeid-light.svg');
 	}
 
-	public function getDarkIcon(): string {
+	public function getDarkIcon(): string
+	{
 		return $this->urlGenerator->imagePath(Application::APP_NAME, 'webeid-dark.svg');
 	}
 }
