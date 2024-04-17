@@ -74,7 +74,7 @@ class WebEidProvider implements IProvider, IProvidesIcons, IActivatableByAdmin, 
 
 	public function disableFor(IUser $user)
 	{
-		$this->registry->enableProviderFor($this, $user);
+		$this->registry->disableProviderFor($this, $user);
 	}
 
 	/**
